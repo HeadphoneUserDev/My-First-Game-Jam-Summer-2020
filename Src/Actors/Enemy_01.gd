@@ -34,6 +34,14 @@ func _on_Hitbox_area_entered(area):
 		area.get_parent().queue_free()
 		#get_parent so that not only the hitbox will queue_free
 	
+	if area.is_in_group("EnemyDestroyer"):
+		modulate = Color.white
+		velocity = -velocity * 3
+		hp -= 5
+		stun = true
+		$StunTimer.start()
+		
+	
 	pass
 
 

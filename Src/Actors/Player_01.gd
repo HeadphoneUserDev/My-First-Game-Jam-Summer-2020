@@ -8,6 +8,7 @@ var velocity = Vector2.ZERO
 
 var bullet = preload("res://Src/Bullets/PlayerBullet_01.tscn")
 var machineGun_bullet = preload("res://Src/Bullets/MachineGunBullet_01.tscn")
+var bazookaBullet = preload("res://Src/Bullets/BazookaBullet_01.tscn")
 
 var can_shoot = true
 var is_dead = false
@@ -63,10 +64,16 @@ func move_state(delta):
 			chosen_weapon1 = false
 			chosen_weapon3 = false
 			
-	
+	elif Input.is_action_just_pressed("weapon_change3"):
+		
+		if chosen_weapon3 == false:
+			chosen_weapon3 = true
+			chosen_weapon1 = false
+			chosen_weapon2 = false
 	
 	pistol_shoot()
 	machineGun_shoot()
+	bazooka_shoot()
 	
 	pass
 
@@ -85,6 +92,16 @@ func machineGun_shoot():
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon2 == true:
 		Global.instance_node(machineGun_bullet, global_position, Global.node_creation_parent)
 		$ReloadSpeed.wait_time = 0.1
+		$ReloadSpeed.start()
+		can_shoot = false
+	
+	pass
+
+func bazooka_shoot():
+	
+	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon3 == true:
+		Global.instance_node(bazookaBullet, global_position, Global.node_creation_parent)
+		$ReloadSpeed.wait_time = 0.7
 		$ReloadSpeed.start()
 		can_shoot = false
 	
