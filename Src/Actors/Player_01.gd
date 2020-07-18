@@ -24,7 +24,12 @@ onready var rng = RandomNumberGenerator.new()
 
 func _ready():
 	
-	Global.player = self
+	if is_dead == false:
+		Global.player = self
+		print("self")
+	elif is_dead == true:
+		Global.player = null
+		print("null")
 	rng.randomize()
 	
 	pass
@@ -43,6 +48,7 @@ func _physics_process(delta):
 	if hp <= 0:
 		is_dead = true
 		visible = false
+		_exit_tree()
 		yield(get_tree().create_timer(0.5), "timeout")
 		get_tree().reload_current_scene()
 	
@@ -166,6 +172,13 @@ func _on_Hitbox_area_entered(area):
 		modulate = Color("ff0000")
 		hp -= 1
 		$GotHitTimer.start()
+		
+		var weapon_choice = rng.randi_range(1, 4)
+		chosen_weapon1 = weapon_choice == 1
+		chosen_weapon2 = weapon_choice == 2
+		chosen_weapon3 = weapon_choice == 3
+		chosen_weapon4 = weapon_choice == 4
+		print(weapon_choice)
 	
 	if area.is_in_group("WeaponChange"):
 		var weapon_choice = rng.randi_range(1, 4)

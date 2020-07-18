@@ -1,7 +1,8 @@
 extends Sprite
 
 var velocity = Vector2(1, 0)
-var speed = 450
+var speed = 10
+var max_speed = 1000
 
 
 var look_once = true
@@ -13,6 +14,8 @@ func _process(delta):
 		look_once = false
 	
 	global_position += velocity.rotated(rotation) * speed * delta
+#	speed *= 65 * delta
+	speed = lerp(speed, max_speed, delta * 2)
 	
 	pass
 

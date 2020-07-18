@@ -1,6 +1,8 @@
 extends Sprite
 
 var speed = 75
+var stop = 0
+var friction = 100
 
 var velocity = Vector2()
 
@@ -22,11 +24,12 @@ func _process(delta):
 	
 	if Global.player != null and stun == false:
 		velocity = global_position.direction_to(Global.player.global_position)
+		forward_movement(delta)
 	elif stun:
 		velocity = lerp(velocity, Vector2(0, 0), 0.3)
+	if Global.player == null and stun == true:
+		stop_movement(delta)
 	
-	global_position += velocity * speed * delta
-	#makes enemy move
 	
 	hitBox.knockback_vector = move_vector
 	
@@ -35,6 +38,21 @@ func _process(delta):
 	
 	pass
 
+func forward_movement(delta):
+	
+	global_position += velocity * speed * delta
+	#makes enemy move
+	
+	pass
+
+func stop_movement(delta):
+	
+	global_position += velocity * stop * delta
+#	global_position += velocity.move_toward(stop, friction * delta)
+#	global_position = lerp(velocity, stop, friction)
+	#I want the enemy to stop smoothly when the player dies, though it can wait
+	
+	pass
 
 func _on_Hitbox_area_entered(area):
 	
