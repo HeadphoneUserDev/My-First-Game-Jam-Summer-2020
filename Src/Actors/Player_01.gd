@@ -16,9 +16,12 @@ var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
 
+onready var rng = RandomNumberGenerator.new()
+
 func _ready():
 	
 	Global.player = self
+	rng.randomize()
 	
 	pass
 
@@ -128,5 +131,12 @@ func _on_Hitbox_area_entered(area):
 		visible = false
 		yield(get_tree().create_timer(0.5), "timeout")
 		get_tree().reload_current_scene()
+	
+	if area.is_in_group("WeaponChange"):
+		var weapon_choice = rng.randi_range(1, 3)
+		chosen_weapon1 = weapon_choice == 1
+		chosen_weapon2 = weapon_choice == 2
+		chosen_weapon3 = weapon_choice == 3
+		print(weapon_choice)
 	
 	pass

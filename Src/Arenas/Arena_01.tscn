@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Src/Actors/Player_01.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Src/Arenas/Arena_01.gd" type="Script" id=2]
 [ext_resource path="res://Src/Actors/Enemy_01.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Src/Mechanics or something/WeaponChange.tscn" type="PackedScene" id=4]
 
 [node name="Arena_01" type="Node2D"]
 script = ExtResource( 2 )
@@ -12,3 +13,6 @@ position = Vector2( 320, 180 )
 
 [node name="Enemy_01" parent="." instance=ExtResource( 3 )]
 position = Vector2( 151, 149 )
+
+[node name="WeaponChange" parent="." instance=ExtResource( 4 )]
+position = Vector2( 509, 138 )
