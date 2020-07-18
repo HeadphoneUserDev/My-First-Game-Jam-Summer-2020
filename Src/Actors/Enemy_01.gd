@@ -6,8 +6,19 @@ var velocity = Vector2()
 
 var stun = false
 var hp = 5
+var some_vector = Vector2.DOWN
+
+onready var hitBox = $Hitbox
+
+func _ready():
+	
+	hitBox.knockback_vector = some_vector
+	
+	pass
 
 func _process(delta):
+	
+	var move_vector = velocity
 	
 	if Global.player != null and stun == false:
 		velocity = global_position.direction_to(Global.player.global_position)
@@ -16,6 +27,8 @@ func _process(delta):
 	
 	global_position += velocity * speed * delta
 	#makes enemy move
+	
+	hitBox.knockback_vector = move_vector
 	
 	if hp <= 0:
 		queue_free()

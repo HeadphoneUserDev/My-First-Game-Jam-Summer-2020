@@ -36,5 +36,9 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 visible = false
 shape = SubResource( 2 )
+
+[node name="GotHitTimer" type="Timer" parent="."]
+wait_time = 0.1
 [connection signal="timeout" from="ReloadSpeed" to="." method="_on_ReloadSpeed_timeout"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="timeout" from="GotHitTimer" to="." method="_on_GotHitTimer_timeout"]

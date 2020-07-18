@@ -1,10 +1,15 @@
 extends Sprite
 
 var velocity = Vector2(1, 0)
-var speed = 450
-
+var speed = 300
 
 var look_once = true
+
+func _ready():
+	
+	$LifeTime.start()
+	
+	pass
 
 func _process(delta):
 	
@@ -13,6 +18,7 @@ func _process(delta):
 		look_once = false
 	
 	global_position += velocity.rotated(rotation) * speed * delta
+	
 	
 	pass
 
@@ -24,17 +30,8 @@ func _on_VisibilityNotifier2D_screen_exited():
 	pass
 
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_LifeTime_timeout():
 	
 	queue_free()
-	
-	pass
-
-
-func _on_Hitbox_area_entered(area):
-	
-	if area.is_in_group("Enemy"):
-		$AnimationPlayer.play("BazookaExplosion")
-		velocity = Vector2.ZERO
 	
 	pass

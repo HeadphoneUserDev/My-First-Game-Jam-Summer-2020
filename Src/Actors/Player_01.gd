@@ -5,16 +5,20 @@ export var MAX_SPEED = 250
 export var FRICTION = 1000
 
 var velocity = Vector2.ZERO
+var hp = 5
+var knockback = Vector2.ZERO
 
 var bullet = preload("res://Src/Bullets/PlayerBullet_01.tscn")
 var machineGun_bullet = preload("res://Src/Bullets/MachineGunBullet_01.tscn")
 var bazookaBullet = preload("res://Src/Bullets/BazookaBullet_01.tscn")
+var warpDevice = preload("res://Src/Mechanics or something/WarpDevice.tscn")
 
 var can_shoot = true
 var is_dead = false
 var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
+var chosen_weapon4 = false
 
 onready var rng = RandomNumberGenerator.new()
 
@@ -32,6 +36,15 @@ func _exit_tree():
 	pass
 
 func _physics_process(delta):
+	
+	knockback = knockback.move_toward(Vector2.ZERO, 1000 * delta)
+	knockback = move_and_slide(knockback)
+	
+	if hp <= 0:
+		is_dead = true
+		visible = false
+		yield(get_tree().create_timer(0.5), "timeout")
+		get_tree().reload_current_scene()
 	
 	if is_dead == false:
 		move_state(delta)
@@ -59,6 +72,7 @@ func move_state(delta):
 			chosen_weapon1 = true
 			chosen_weapon2 = false
 			chosen_weapon3 = false
+			chosen_weapon4 = false
 			
 	elif Input.is_action_just_pressed("weapon_change2"):
 		
@@ -66,6 +80,7 @@ func move_state(delta):
 			chosen_weapon2 = true
 			chosen_weapon1 = false
 			chosen_weapon3 = false
+			chosen_weapon4 = false
 			
 	elif Input.is_action_just_pressed("weapon_change3"):
 		
@@ -73,10 +88,20 @@ func move_state(delta):
 			chosen_weapon3 = true
 			chosen_weapon1 = false
 			chosen_weapon2 = false
-	
+			chosen_weapon4 = false
+			
+	elif Input.is_action_just_pressed("weapon_change4"):
+		
+		if chosen_weapon4 == false:
+			chosen_weapon4 = true
+			chosen_weapon1 = false
+			chosen_weapon2 = false
+			chosen_weapon3 = false
+			
 	pistol_shoot()
 	machineGun_shoot()
 	bazooka_shoot()
+	warp_teleport()
 	
 	pass
 
@@ -110,6 +135,16 @@ func bazooka_shoot():
 	
 	pass
 
+func warp_teleport():
+	
+	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true:
+		Global.instance_node(warpDevice, global_position, Global.node_creation_parent)
+		$ReloadSpeed.wait_time = 0.4
+		$ReloadSpeed.start()
+		can_shoot = false
+	
+	pass
+
 func move():
 	
 	velocity = move_and_slide(velocity)
@@ -126,17 +161,25 @@ func _on_ReloadSpeed_timeout():
 
 func _on_Hitbox_area_entered(area):
 	
-	if area.is_in_group("Enemy"):
-		is_dead = true
-		visible = false
-		yield(get_tree().create_timer(0.5), "timeout")
-		get_tree().reload_current_scene()
+	if area.is_in_group("Enemy"): 
+		knockback = area.knockback_vector * 350
+		modulate = Color("ff0000")
+		hp -= 1
+		$GotHitTimer.start()
 	
 	if area.is_in_group("WeaponChange"):
-		var weapon_choice = rng.randi_range(1, 3)
+		var weapon_choice = rng.randi_range(1, 4)
 		chosen_weapon1 = weapon_choice == 1
 		chosen_weapon2 = weapon_choice == 2
 		chosen_weapon3 = weapon_choice == 3
+		chosen_weapon4 = weapon_choice == 4
 		print(weapon_choice)
+	
+	pass
+
+
+func _on_GotHitTimer_timeout():
+	
+	modulate = Color.white
 	
 	pass

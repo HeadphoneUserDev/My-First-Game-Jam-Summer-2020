@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://Src/Mechanics or something/WarpDevice.gd" type="Script" id=2]
+
+[node name="WarpDevice" type="Sprite"]
+modulate = Color( 0, 0, 0, 1 )
+scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+
+[node name="LifeTime" type="Timer" parent="."]
+one_shot = true
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="LifeTime" to="." method="_on_LifeTime_timeout"]
