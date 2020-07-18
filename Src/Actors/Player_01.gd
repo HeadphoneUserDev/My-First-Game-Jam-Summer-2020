@@ -3,6 +3,7 @@ extends KinematicBody2D
 export var ACCELERATION = 1200
 export var MAX_SPEED = 250
 export var FRICTION = 1000
+var camera_offset = Vector2(200, 100)
 
 var velocity = Vector2.ZERO
 var hp = 5
@@ -21,6 +22,7 @@ var chosen_weapon3 = false
 var chosen_weapon4 = false
 
 onready var rng = RandomNumberGenerator.new()
+onready var camera = get_parent().get_node("Camera2D")
 
 func _ready():
 	
@@ -54,6 +56,8 @@ func _physics_process(delta):
 	
 	if is_dead == false:
 		move_state(delta)
+	
+	aim_zoom()
 	
 	pass
 
@@ -157,6 +161,23 @@ func move():
 	
 	pass
 
+func aim_zoom():
+	
+	if Input.is_action_pressed("aim"):
+		#Calculate the difference between player position and mouse position
+		var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
+		#set the offset to a fixed distance from the player
+		diff = diff / diff.length() * camera_offset
+		#update the camera offset
+		camera.offset = diff
+		camera.zoom = Vector2(0.5, 0.5)
+		
+	else:
+		if Input.is_action_just_released("aim"):
+			var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
+			diff = diff / diff.length() * camera_offset * 0
+			camera.offset = diff
+			camera.zoom = Vector2(0.7, 0.7)
 
 func _on_ReloadSpeed_timeout():
 	
