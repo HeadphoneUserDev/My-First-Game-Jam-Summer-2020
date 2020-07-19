@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Src/Actors/Player_01.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Src/Test/WarpArea.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Src/Test/WarpArea2.tscn" type="PackedScene" id=3]
+
+[node name="TeleportTestScene" type="Node2D"]
+
+[node name="Player_01" parent="." groups=[
+"Player_01",
+] instance=ExtResource( 1 )]
+position = Vector2( 72, 45 )
+
+[node name="WarpArea" parent="." instance=ExtResource( 2 )]
+position = Vector2( 129, 117 )
+teleport_target = NodePath("../WarpArea2")
+
+[node name="WarpArea2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 392, 123 )
+teleport_target = NodePath("../WarpArea")
+[connection signal="teleport1_teleported" from="WarpArea" to="WarpArea2" method="teleported"]
+[connection signal="teleport2_teleported" from="WarpArea2" to="WarpArea" method="teleported"]

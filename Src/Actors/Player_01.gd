@@ -116,12 +116,12 @@ func move_state(delta):
 	bazooka_shoot()
 	warp_teleport()
 	
-	if Input.is_action_just_pressed("warp"):
-		get_tree().call_group("Player_01", "teleport_to", teleport_target_test.global_position)
+#	if Input.is_action_just_pressed("warp"):
+#		get_tree().call_group("Player_01", "teleport_to", teleport_target_test.position)
 	
 	pass
 
-func target_to(target_pos):
+func teleport_to(target_pos):
 	
 	position = target_pos
 	
