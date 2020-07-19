@@ -1,5 +1,7 @@
 extends Sprite
 
+signal thrown
+
 var velocity = Vector2(1, 0)
 var speed = 300
 
@@ -8,6 +10,7 @@ var look_once = true
 func _ready():
 	
 	$LifeTime.start()
+	emit_signal("thrown")
 	
 	pass
 
@@ -20,8 +23,14 @@ func _process(delta):
 	global_position += velocity.rotated(rotation) * speed * delta
 	
 	
+	
 	pass
 
+func teleport_to():
+	
+	get_tree().call_group("Player_01", "")
+	
+	pass
 
 func _on_VisibilityNotifier2D_screen_exited():
 	
@@ -32,6 +41,6 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 func _on_LifeTime_timeout():
 	
-	queue_free()
+#	queue_free()
 	
 	pass

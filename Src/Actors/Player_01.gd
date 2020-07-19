@@ -1,5 +1,8 @@
 extends KinematicBody2D
 
+export(NodePath) var teleport_target = null
+onready var teleport_target_test = get_node("res://Src/Mechanics or something/WarpDevice.tscn")
+
 export var ACCELERATION = 1200
 export var MAX_SPEED = 250
 export var FRICTION = 1000
@@ -113,6 +116,15 @@ func move_state(delta):
 	bazooka_shoot()
 	warp_teleport()
 	
+	if Input.is_action_just_pressed("warp"):
+		get_tree().call_group("Player_01", "teleport_to", teleport_target_test.global_position)
+	
+	pass
+
+func target_to(target_pos):
+	
+	position = target_pos
+	
 	pass
 
 func pistol_shoot():
@@ -191,7 +203,7 @@ func _on_Hitbox_area_entered(area):
 	if area.is_in_group("Enemy"): 
 		knockback = area.knockback_vector * 350
 		modulate = Color("ff0000")
-		hp -= 1
+		hp -= 0
 		$GotHitTimer.start()
 		
 		var weapon_choice = rng.randi_range(1, 4)
