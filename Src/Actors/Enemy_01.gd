@@ -7,7 +7,7 @@ var friction = 100
 var velocity = Vector2()
 
 var stun = false
-var hp = 5
+var hp = 3
 var some_vector = Vector2.DOWN
 
 onready var hitBox = $Hitbox
@@ -48,9 +48,6 @@ func forward_movement(delta):
 func stop_movement(delta):
 	
 	global_position += velocity * stop * delta
-#	global_position += velocity.move_toward(stop, friction * delta)
-#	global_position = lerp(velocity, stop, friction)
-	#I want the enemy to stop smoothly when the player dies, though it can wait
 	
 	pass
 

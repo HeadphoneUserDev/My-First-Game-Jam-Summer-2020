@@ -1,33 +1,72 @@
 extends Area2D
 
-signal teleport1_teleported
+var speed = 300
+var stop = 0
+var friction = 100
 
-export(NodePath) var teleport_target = null
+var velocity = Vector2(1, 0)
+
+signal teleport1_teleported
 
 var player_in_teleport1 = false
 var player_in_teleport1_allow = true
 var teleported = false
+var enabled = false
+var moving = true
+var look_once = true
+
+onready var warpArea2 = get_parent().get_node("WarpArea2")
+
+func _ready():
+	
+	self.connect("teleport1_teleported", warpArea2, "teleported2")
+	
+	pass
 
 func _process(delta):
 	
-#	if Input.is_action_just_pressed("warp") and teleported == false:
-#		get_tree().call_group("Player_01", "teleport_to", get_node(teleport_target).position)
-	
+	moving1(delta)
+	stop1(delta)
 	teleport()
+	
+	if look_once:
+		look_at(get_global_mouse_position())
+		look_once = false
+	
+	if Input.is_action_just_pressed("place"):
+		moving = false
+		enabled = true
+	
+	if player_in_teleport1_allow == false:
+		queue_free()
+	
+	pass
+
+func moving1(delta):
+	
+	if moving == true:
+		global_position += velocity.rotated(rotation) * speed * delta
+	
+	pass
+
+func stop1(delta):
+	
+	if moving == false:
+		global_position += velocity.rotated(rotation) * stop * delta
 	
 	pass
 
 func teleport():
 	
 	if player_in_teleport1 == true and teleported == false:
-		get_tree().call_group("Player_01", "teleport_to", get_node(teleport_target).position)
+		get_tree().call_group("Player_01", "teleport_to", warpArea2.global_position)
 		teleported = true
 		player_in_teleport1 = false
 		emit_signal("teleport1_teleported")
 	
 	pass
 
-func teleported():
+func teleported1():
 	
 	player_in_teleport1_allow = false
 	
@@ -35,7 +74,7 @@ func teleported():
 
 func _on_WarpArea_body_entered(body):
 	
-	if body.is_in_group("Player_01"):
+	if body.is_in_group("Player_01") and enabled == true:
 		if player_in_teleport1_allow == true:
 			player_in_teleport1 = true
 		teleport()

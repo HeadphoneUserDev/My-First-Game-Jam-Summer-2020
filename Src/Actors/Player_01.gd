@@ -1,8 +1,5 @@
 extends KinematicBody2D
 
-export(NodePath) var teleport_target = null
-onready var teleport_target_test = get_node("res://Src/Mechanics or something/WarpDevice.tscn")
-
 export var ACCELERATION = 1200
 export var MAX_SPEED = 250
 export var FRICTION = 1000
@@ -15,10 +12,13 @@ var knockback = Vector2.ZERO
 var bullet = preload("res://Src/Bullets/PlayerBullet_01.tscn")
 var machineGun_bullet = preload("res://Src/Bullets/MachineGunBullet_01.tscn")
 var bazookaBullet = preload("res://Src/Bullets/BazookaBullet_01.tscn")
-var warpDevice = preload("res://Src/Mechanics or something/WarpDevice.tscn")
+var warpArea = preload("res://Src/Test/WarpArea.tscn")
+var warpArea2 = preload("res://Src/Test/WarpArea2.tscn")
 
 var can_shoot = true
 var is_dead = false
+var warpArea_used = false
+var warpArea2_used = true
 var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
@@ -60,7 +60,7 @@ func _physics_process(delta):
 	if is_dead == false:
 		move_state(delta)
 	
-	aim_zoom()
+#	aim_zoom()
 	
 	pass
 
@@ -116,9 +116,6 @@ func move_state(delta):
 	bazooka_shoot()
 	warp_teleport()
 	
-#	if Input.is_action_just_pressed("warp"):
-#		get_tree().call_group("Player_01", "teleport_to", teleport_target_test.position)
-	
 	pass
 
 func teleport_to(target_pos):
@@ -159,11 +156,18 @@ func bazooka_shoot():
 
 func warp_teleport():
 	
-	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true:
-		Global.instance_node(warpDevice, global_position, Global.node_creation_parent)
-		$ReloadSpeed.wait_time = 0.4
+	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == false:
+		Global.instance_node(warpArea, global_position, Global.node_creation_parent)
+		$ReloadSpeed.wait_time = 0.05
 		$ReloadSpeed.start()
 		can_shoot = false
+		warpArea_used = true
+		
+	elif Input.is_action_pressed("place") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == true:
+		Global.instance_node(warpArea2, global_position, Global.node_creation_parent)
+		warpArea_used = false
+#	elif Input.is_action_pressed("right_click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea2_used == false:
+		
 	
 	pass
 
@@ -173,23 +177,23 @@ func move():
 	
 	pass
 
-func aim_zoom():
-	
-	if Input.is_action_pressed("aim"):
-		#Calculate the difference between player position and mouse position
-		var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
-		#set the offset to a fixed distance from the player
-		diff = diff / diff.length() * camera_offset
-		#update the camera offset
-		camera.offset = diff
-		camera.zoom = Vector2(0.5, 0.5)
-		
-	else:
-		if Input.is_action_just_released("aim"):
-			var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
-			diff = diff / diff.length() * camera_offset * 0
-			camera.offset = diff
-			camera.zoom = Vector2(0.7, 0.7)
+#func aim_zoom():
+#
+#	if Input.is_action_pressed("aim"):
+#		#Calculate the difference between player position and mouse position
+#		var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
+#		#set the offset to a fixed distance from the player
+#		diff = diff / diff.length() * camera_offset
+#		#update the camera offset
+#		camera.offset = diff
+#		camera.zoom = Vector2(0.5, 0.5)
+#
+#	else:
+#		if Input.is_action_just_released("aim"):
+#			var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
+#			diff = diff / diff.length() * camera_offset * 0
+#			camera.offset = diff
+#			camera.zoom = Vector2(0.7, 0.7)
 
 func _on_ReloadSpeed_timeout():
 	

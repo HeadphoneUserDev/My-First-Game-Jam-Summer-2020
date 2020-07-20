@@ -18,5 +18,3 @@ teleport_target = NodePath("../WarpArea2")
 [node name="WarpArea2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 392, 123 )
 teleport_target = NodePath("../WarpArea")
-[connection signal="teleport1_teleported" from="WarpArea" to="WarpArea2" method="teleported"]
-[connection signal="teleport2_teleported" from="WarpArea2" to="WarpArea" method="teleported"]

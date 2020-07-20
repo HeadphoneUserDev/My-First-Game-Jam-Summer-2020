@@ -3,7 +3,7 @@
 [ext_resource path="res://Src/Test/WarpArea2.gd" type="Script" id=1]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 17, 15 )
+extents = Vector2( 6, 6 )
 
 [node name="WarpArea2" type="Area2D"]
 script = ExtResource( 1 )
