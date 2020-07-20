@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal warpAreaCanceled
+
 export var ACCELERATION = 1200
 export var MAX_SPEED = 250
 export var FRICTION = 1000
@@ -26,6 +28,7 @@ var chosen_weapon4 = false
 
 onready var rng = RandomNumberGenerator.new()
 onready var camera = get_parent().get_node("Camera2D")
+onready var warpAreaNode = get_parent().find_node("WarpArea")
 
 func _ready():
 	
@@ -36,6 +39,8 @@ func _ready():
 		Global.player = null
 		print("null")
 	rng.randomize()
+	
+	self.connect("warpAreaCanceled", warpAreaNode, "cancel")
 	
 	pass
 
@@ -207,7 +212,7 @@ func _on_Hitbox_area_entered(area):
 	if area.is_in_group("Enemy"): 
 		knockback = area.knockback_vector * 350
 		modulate = Color("ff0000")
-		hp -= 0
+		hp -= 1
 		$GotHitTimer.start()
 		
 		var weapon_choice = rng.randi_range(1, 4)
@@ -215,7 +220,7 @@ func _on_Hitbox_area_entered(area):
 		chosen_weapon2 = weapon_choice == 2
 		chosen_weapon3 = weapon_choice == 3
 		chosen_weapon4 = weapon_choice == 4
-		print(weapon_choice)
+		
 	
 	if area.is_in_group("WeaponChange"):
 		var weapon_choice = rng.randi_range(1, 4)

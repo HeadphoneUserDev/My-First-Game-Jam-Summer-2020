@@ -47,7 +47,7 @@ func forward_movement(delta):
 
 func stop_movement(delta):
 	
-	global_position += velocity * stop * delta
+	global_position += velocity * speed * delta
 	
 	pass
 

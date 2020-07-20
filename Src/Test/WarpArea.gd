@@ -1,8 +1,8 @@
 extends Area2D
 
-var speed = 300
+var speed = 750
 var stop = 0
-var friction = 100
+var friction = 5
 
 var velocity = Vector2(1, 0)
 
@@ -16,10 +16,12 @@ var moving = true
 var look_once = true
 
 onready var warpArea2 = get_parent().get_node("WarpArea2")
+onready var player_01 = get_parent().get_node("Player_01")
 
 func _ready():
 	
 	self.connect("teleport1_teleported", warpArea2, "teleported2")
+	$LifeTime.start()
 	
 	pass
 
@@ -37,6 +39,7 @@ func _process(delta):
 		moving = false
 		enabled = true
 	
+	
 	if player_in_teleport1_allow == false:
 		queue_free()
 	
@@ -46,13 +49,15 @@ func moving1(delta):
 	
 	if moving == true:
 		global_position += velocity.rotated(rotation) * speed * delta
+		
 	
 	pass
 
 func stop1(delta):
 	
 	if moving == false:
-		global_position += velocity.rotated(rotation) * stop * delta
+		global_position += velocity.rotated(rotation) * speed * delta
+		speed = lerp(speed, stop, delta * 5)
 	
 	pass
 
@@ -69,6 +74,7 @@ func teleport():
 func teleported1():
 	
 	player_in_teleport1_allow = false
+	print("connected")
 	
 	pass
 
@@ -91,5 +97,18 @@ func _on_WarpArea_body_exited(body):
 		teleported = false
 		player_in_teleport1_allow = true
 	print("exited")
+	
+	pass
+
+func cancel():
+	
+	queue_free()
+	
+	pass
+
+
+func _on_LifeTime_timeout():
+	
+	moving = false
 	
 	pass
