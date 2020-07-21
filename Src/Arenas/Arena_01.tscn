@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Src/Actors/Player_01.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Src/Arenas/Arena_01.gd" type="Script" id=2]
 [ext_resource path="res://assets/tileset.png" type="Texture" id=3]
-[ext_resource path="res://Src/Mechanics or something/WeaponChange.tscn" type="PackedScene" id=4]
 
 [sub_resource type="TileSet" id=1]
 0/name = "tileset.png 0"
@@ -39,9 +38,7 @@ script = ExtResource( 2 )
 position = Vector2( 320, 180 )
 
 [node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player_01"]
-
-[node name="WeaponChange" parent="." instance=ExtResource( 4 )]
-position = Vector2( 509, 138 )
+remote_path = NodePath("../../Camera2D")
 
 [node name="EnemySpawnTimer" type="Timer" parent="."]
 autostart = true
@@ -56,4 +53,12 @@ smoothing_enabled = true
 tile_set = SubResource( 1 )
 format = 1
 tile_data = PoolIntArray( -1, 0, 0, -65536, 0, 0, -65535, 0, 0, -65534, 0, 0, -65533, 0, 0, -65532, 0, 0, -65531, 0, 0, -65530, 0, 0, -65529, 0, 0, -65528, 0, 0, -65527, 0, 0, -65526, 0, 0, -65525, 0, 0, -65524, 0, 0, -65523, 0, 0, -65522, 0, 0, -65521, 0, 0, -65520, 0, 0, -65519, 0, 0, -65518, 0, 0, -65517, 0, 0, -65516, 0, 0, 65535, 0, 0, 20, 0, 0, 131071, 0, 0, 65556, 0, 0, 196607, 0, 0, 131092, 0, 0, 262143, 0, 0, 196628, 0, 0, 327679, 0, 0, 262164, 0, 0, 393215, 0, 0, 327700, 0, 0, 458751, 0, 0, 393236, 0, 0, 524287, 0, 0, 458772, 0, 0, 589823, 0, 0, 524308, 0, 0, 655359, 0, 0, 589844, 0, 0, 720895, 0, 0, 655380, 0, 0, 786431, 0, 0, 720916, 0, 0, 851967, 0, 0, 786432, 0, 0, 786433, 0, 0, 786434, 0, 0, 786435, 0, 0, 786436, 0, 0, 786437, 0, 0, 786438, 0, 0, 786439, 0, 0, 786440, 0, 0, 786441, 0, 0, 786442, 0, 0, 786443, 0, 0, 786444, 0, 0, 786445, 0, 0, 786446, 0, 0, 786447, 0, 0, 786448, 0, 0, 786449, 0, 0, 786450, 0, 0, 786451, 0, 0, 786452, 0, 0 )
+
+[node name="WeaponPickUpTimer" type="Timer" parent="."]
+wait_time = 35.0
+
+[node name="HealthPickUpTimer" type="Timer" parent="."]
+wait_time = 30.0
 [connection signal="timeout" from="EnemySpawnTimer" to="." method="_on_EnemySpawnTimer_timeout"]
+[connection signal="timeout" from="WeaponPickUpTimer" to="." method="_on_WeaponPickUpTimer_timeout"]
+[connection signal="timeout" from="HealthPickUpTimer" to="." method="_on_HealthPickUpTimer_timeout"]

@@ -8,7 +8,8 @@ export var FRICTION = 1000
 var camera_offset = Vector2(200, 100)
 
 var velocity = Vector2.ZERO
-var hp = 5
+var hp 
+var max_hp = 5
 var knockback = Vector2.ZERO
 
 var bullet = preload("res://Src/Bullets/PlayerBullet_01.tscn")
@@ -17,10 +18,13 @@ var bazookaBullet = preload("res://Src/Bullets/BazookaBullet_01.tscn")
 var warpArea = preload("res://Src/Test/WarpArea.tscn")
 var warpArea2 = preload("res://Src/Test/WarpArea2.tscn")
 
+var bazookaReload = 0.5
+
 var can_shoot = true
 var is_dead = false
 var warpArea_used = false
 var warpArea2_used = true
+var healthFull = true
 var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
@@ -28,7 +32,7 @@ var chosen_weapon4 = false
 
 onready var rng = RandomNumberGenerator.new()
 onready var camera = get_parent().get_node("Camera2D")
-onready var warpAreaNode = get_parent().find_node("WarpArea")
+onready var healthPickup = get_parent().get_node("HealthPickUp")
 
 func _ready():
 	
@@ -40,7 +44,10 @@ func _ready():
 		print("null")
 	rng.randomize()
 	
-	self.connect("warpAreaCanceled", warpAreaNode, "cancel")
+	hp = max_hp
+	print(hp)
+	
+	self.connect("healthFull", healthPickup, "health_full")
 	
 	pass
 
@@ -54,6 +61,9 @@ func _physics_process(delta):
 	
 	knockback = knockback.move_toward(Vector2.ZERO, 1000 * delta)
 	knockback = move_and_slide(knockback)
+	
+	if hp <= 4:
+		healthFull = false
 	
 	if hp <= 0:
 		is_dead = true
@@ -121,6 +131,9 @@ func move_state(delta):
 	bazooka_shoot()
 	warp_teleport()
 	
+	position.x = clamp(position.x, camera.limit_left, camera.limit_right)
+	position.y = clamp(position.y, camera.limit_top, camera.limit_bottom)
+	
 	pass
 
 func teleport_to(target_pos):
@@ -153,7 +166,7 @@ func bazooka_shoot():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon3 == true:
 		Global.instance_node(bazookaBullet, global_position, Global.node_creation_parent)
-		$ReloadSpeed.wait_time = 0.7
+		$ReloadSpeed.wait_time = bazookaReload
 		$ReloadSpeed.start()
 		can_shoot = false
 	
@@ -214,6 +227,7 @@ func _on_Hitbox_area_entered(area):
 		modulate = Color("ff0000")
 		hp -= 1
 		$GotHitTimer.start()
+		print(hp)
 		
 		var weapon_choice = rng.randi_range(1, 4)
 		chosen_weapon1 = weapon_choice == 1
@@ -222,7 +236,16 @@ func _on_Hitbox_area_entered(area):
 		chosen_weapon4 = weapon_choice == 4
 		
 	
-	if area.is_in_group("WeaponChange"):
+	elif area.is_in_group("Health") and hp != 5:
+		hp += 2
+		hp = clamp(hp, 0, max_hp)
+		print(hp)
+		
+		if hp == 5:
+			yield(get_tree().create_timer(0.2), "timeout")
+			healthFull = true
+		
+	elif area.is_in_group("WeaponPickUp"):
 		var weapon_choice = rng.randi_range(1, 4)
 		chosen_weapon1 = weapon_choice == 1
 		chosen_weapon2 = weapon_choice == 2
