@@ -18,7 +18,9 @@ var bazookaBullet = preload("res://Src/Bullets/BazookaBullet_01.tscn")
 var warpArea = preload("res://Src/Test/WarpArea.tscn")
 var warpArea2 = preload("res://Src/Test/WarpArea2.tscn")
 
-var bazookaReload = 0.5
+var pistolReload = 0.5
+var machinegunReload = 0.1
+var bazookaReload = 0.8
 
 var can_shoot = true
 var is_dead = false
@@ -95,37 +97,37 @@ func move_state(delta):
 	move()
 	
 	if Input.is_action_just_pressed("weapon_change1"):
-		
+
 		if chosen_weapon1 == false:
 			chosen_weapon1 = true
 			chosen_weapon2 = false
 			chosen_weapon3 = false
 			chosen_weapon4 = false
-			
+
 	elif Input.is_action_just_pressed("weapon_change2"):
-		
+
 		if chosen_weapon2 == false:
 			chosen_weapon2 = true
 			chosen_weapon1 = false
 			chosen_weapon3 = false
 			chosen_weapon4 = false
-			
+
 	elif Input.is_action_just_pressed("weapon_change3"):
-		
+
 		if chosen_weapon3 == false:
 			chosen_weapon3 = true
 			chosen_weapon1 = false
 			chosen_weapon2 = false
 			chosen_weapon4 = false
-			
+
 	elif Input.is_action_just_pressed("weapon_change4"):
-		
+
 		if chosen_weapon4 == false:
 			chosen_weapon4 = true
 			chosen_weapon1 = false
 			chosen_weapon2 = false
 			chosen_weapon3 = false
-			
+#
 	pistol_shoot()
 	machineGun_shoot()
 	bazooka_shoot()
@@ -146,7 +148,7 @@ func pistol_shoot():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon1 == true:
 		Global.instance_node(bullet, global_position, Global.node_creation_parent)
-		$ReloadSpeed.wait_time = 0.5
+		$ReloadSpeed.wait_time = pistolReload
 		$ReloadSpeed.start()
 		can_shoot = false
 	
@@ -156,7 +158,7 @@ func machineGun_shoot():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon2 == true:
 		Global.instance_node(machineGun_bullet, global_position, Global.node_creation_parent)
-		$ReloadSpeed.wait_time = 0.1
+		$ReloadSpeed.wait_time = machinegunReload
 		$ReloadSpeed.start()
 		can_shoot = false
 	
@@ -176,7 +178,7 @@ func warp_teleport():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == false:
 		Global.instance_node(warpArea, global_position, Global.node_creation_parent)
-		$ReloadSpeed.wait_time = 0.05
+		$ReloadSpeed.wait_time = 0.0005
 		$ReloadSpeed.start()
 		can_shoot = false
 		warpArea_used = true
@@ -184,7 +186,6 @@ func warp_teleport():
 	elif Input.is_action_pressed("place") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == true:
 		Global.instance_node(warpArea2, global_position, Global.node_creation_parent)
 		warpArea_used = false
-#	elif Input.is_action_pressed("right_click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea2_used == false:
 		
 	
 	pass
@@ -235,7 +236,6 @@ func _on_Hitbox_area_entered(area):
 		chosen_weapon3 = weapon_choice == 3
 		chosen_weapon4 = weapon_choice == 4
 		
-	
 	elif area.is_in_group("Health") and hp != 5:
 		hp += 2
 		hp = clamp(hp, 0, max_hp)
@@ -252,6 +252,14 @@ func _on_Hitbox_area_entered(area):
 		chosen_weapon3 = weapon_choice == 3
 		chosen_weapon4 = weapon_choice == 4
 		print(weapon_choice)
+	elif area.is_in_group("ReloadUpgrade"):
+		if chosen_weapon1 == true:
+			pistolReload *= 0.9
+		elif chosen_weapon2 == true:
+			machinegunReload *= 0.9
+		elif chosen_weapon3 == true:
+			bazookaReload *= 0.9
+	
 	
 	pass
 

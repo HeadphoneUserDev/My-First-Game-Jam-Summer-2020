@@ -29,7 +29,7 @@ func _process(delta):
 	
 	moving1(delta)
 	stop1(delta)
-	teleport()
+#	teleport()
 	
 	if look_once:
 		look_at(get_global_mouse_position())

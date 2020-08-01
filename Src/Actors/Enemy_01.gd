@@ -1,5 +1,7 @@
 extends Sprite
 
+signal enemy_dead
+
 var speed = 75
 var stop = 0
 var friction = 100
@@ -11,12 +13,24 @@ var hp = 3
 var some_vector = Vector2.DOWN
 
 onready var hitBox = $Hitbox
+onready var scorePoint = get_parent().get_node("../CanvasLayer/Score")
 
 func _ready():
 	
+	self.connect("enemy_dead", scorePoint, "score_event")
+	
 	hitBox.knockback_vector = some_vector
+	randomize()
+	
+	Global.enemy = self
 	
 	pass
+
+#func _exit_tree():
+#
+#	Global.enemy = null
+#
+#	pass
 
 func _process(delta):
 	
@@ -34,6 +48,7 @@ func _process(delta):
 	hitBox.knockback_vector = move_vector
 	
 	if hp <= 0:
+		emit_signal("enemy_dead")
 		queue_free()
 	
 	pass
