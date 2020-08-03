@@ -3,7 +3,9 @@ extends Sprite
 var velocity = Vector2(1, 0)
 var speed = 10
 var max_speed = 1000
+var stop = 0
 
+var exploded = false
 
 var look_once = true
 
@@ -29,6 +31,7 @@ func _on_VisibilityNotifier2D_screen_exited():
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	
+	yield(get_tree().create_timer(0.2), "timeout")
 	queue_free()
 	
 	pass
@@ -36,8 +39,17 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 
 func _on_Hitbox_area_entered(area):
 	
-	if area.is_in_group("Enemy"):
-		$AnimationPlayer.play("BazookaExplosion")
-		velocity = Vector2.ZERO
+	
+	pass
+
+
+func _on_DetectHitBox_body_entered(body):
+	
+	if body.is_in_group("Enemy"):
+		if exploded == false:
+			$AnimationPlayer.play("BazookaExplosion")
+			velocity = Vector2.ZERO
+	#		speed = lerp(speed, stop, 1)
+			exploded = true
 	
 	pass

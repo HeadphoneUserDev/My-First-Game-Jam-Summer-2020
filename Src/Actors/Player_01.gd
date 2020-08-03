@@ -1,6 +1,8 @@
 extends KinematicBody2D
 
 signal warpAreaCanceled
+signal healthChange
+signal hit
 
 export var ACCELERATION = 1200
 export var MAX_SPEED = 250
@@ -50,6 +52,7 @@ func _ready():
 	print(hp)
 	
 	self.connect("healthFull", healthPickup, "health_full")
+	emit_signal("healthChange", hp * 100/max_hp)
 	
 	pass
 
@@ -71,7 +74,7 @@ func _physics_process(delta):
 		is_dead = true
 		visible = false
 		_exit_tree()
-		yield(get_tree().create_timer(0.5), "timeout")
+		yield(get_tree().create_timer(1), "timeout")
 		get_tree().reload_current_scene()
 	
 	if is_dead == false:
@@ -178,10 +181,11 @@ func warp_teleport():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == false:
 		Global.instance_node(warpArea, global_position, Global.node_creation_parent)
+		warpArea_used = true
 		$ReloadSpeed.wait_time = 0.0005
 		$ReloadSpeed.start()
 		can_shoot = false
-		warpArea_used = true
+		
 		
 	elif Input.is_action_pressed("place") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == true:
 		Global.instance_node(warpArea2, global_position, Global.node_creation_parent)
@@ -196,23 +200,6 @@ func move():
 	
 	pass
 
-#func aim_zoom():
-#
-#	if Input.is_action_pressed("aim"):
-#		#Calculate the difference between player position and mouse position
-#		var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
-#		#set the offset to a fixed distance from the player
-#		diff = diff / diff.length() * camera_offset
-#		#update the camera offset
-#		camera.offset = diff
-#		camera.zoom = Vector2(0.5, 0.5)
-#
-#	else:
-#		if Input.is_action_just_released("aim"):
-#			var diff = get_viewport().get_mouse_position() - get_global_transform_with_canvas().origin
-#			diff = diff / diff.length() * camera_offset * 0
-#			camera.offset = diff
-#			camera.zoom = Vector2(0.7, 0.7)
 
 func _on_ReloadSpeed_timeout():
 	
@@ -227,6 +214,8 @@ func _on_Hitbox_area_entered(area):
 		knockback = area.knockback_vector * 350
 		modulate = Color("ff0000")
 		hp -= 1
+		emit_signal("healthChange", hp * 100/max_hp)
+		emit_signal("hit")
 		$GotHitTimer.start()
 		print(hp)
 		
@@ -239,6 +228,7 @@ func _on_Hitbox_area_entered(area):
 	elif area.is_in_group("Health") and hp != 5:
 		hp += 2
 		hp = clamp(hp, 0, max_hp)
+		emit_signal("healthChange", hp * 100/max_hp)
 		print(hp)
 		
 		if hp == 5:

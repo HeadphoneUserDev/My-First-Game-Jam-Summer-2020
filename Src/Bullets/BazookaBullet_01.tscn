@@ -3,15 +3,15 @@
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Src/Bullets/BazookaBullet_01.gd" type="Script" id=2]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 28, 28 )
-
 [sub_resource type="CircleShape2D" id=2]
-radius = 20.0
+radius = 36.2215
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 52.0
 
 [sub_resource type="Animation" id=3]
 resource_name = "BazookaExplosion"
-length = 0.3
+length = 0.05
 step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("Hitbox/CollisionShape2D2:scale")
@@ -20,10 +20,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.15, 0.3 ),
-"transitions": PoolRealArray( 3.36359, 1, 1 ),
+"times": PoolRealArray( 0, 0.05 ),
+"transitions": PoolRealArray( 3.36359, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 20, 20 ), Vector2( 1, 1 ) ]
+"values": [ Vector2( 1, 1 ), Vector2( 11, 11 ) ]
 }
 
 [node name="BazookaBullet_01" type="Sprite"]
@@ -36,12 +36,13 @@ script = ExtResource( 2 )
 "EnemyDestroyer",
 ]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-visible = false
-shape = SubResource( 1 )
-
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
 shape = SubResource( 2 )
+
+[node name="DetectHitBox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectHitBox"]
+shape = SubResource( 4 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 visible = false
@@ -51,5 +52,6 @@ scale = Vector2( 2.8, 2.8 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/BazookaExplosion = SubResource( 3 )
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="body_entered" from="DetectHitBox" to="." method="_on_DetectHitBox_body_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
