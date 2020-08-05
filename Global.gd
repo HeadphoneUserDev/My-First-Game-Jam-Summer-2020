@@ -16,12 +16,3 @@ func instance_node(node, location, parent):
 	return node_instance
 	
 	pass
-
-func instance_object(template, position, spawner):
-	
-	var instance = template.instance()
-	instance.enemy_id = enemy_count
-	enemy_count += 1
-	add_child(instance)
-	
-	pass

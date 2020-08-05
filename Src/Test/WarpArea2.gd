@@ -23,7 +23,7 @@ func _ready():
 	
 	pass
 
-func _process(delta):
+func _process(_delta):
 	
 	teleport()
 	
@@ -61,7 +61,7 @@ func _on_WarpArea2_body_entered(body):
 	pass
 
 
-func _on_WarpArea2_body_exited(body):
+func _on_WarpArea2_body_exited(_body):
 	
 #	if body.is_in_group("Player_01"):
 #		player_in_teleport2 = false

@@ -15,12 +15,12 @@ var enabled = false
 var moving = true
 var look_once = true
 
-onready var warpArea2 = get_parent().get_node("WarpArea2")
+#onready var warpArea2 = get_parent().get_node("WarpArea2")
 onready var player_01 = get_parent().get_node("Player_01")
 
 func _ready():
 	
-	self.connect("teleport1_teleported", warpArea2, "teleported2")
+#	self.connect("teleport1_teleported", warpArea2, "teleported2")
 	$LifeTime.start()
 	
 	pass
@@ -64,7 +64,7 @@ func stop1(delta):
 func teleport():
 	
 	if player_in_teleport1 == true and teleported == false:
-		get_tree().call_group("Player_01", "teleport_to", warpArea2.global_position)
+#		get_tree().call_group("Player_01", "teleport_to", warpArea2.global_position)
 		teleported = true
 		player_in_teleport1 = false
 		emit_signal("teleport1_teleported")

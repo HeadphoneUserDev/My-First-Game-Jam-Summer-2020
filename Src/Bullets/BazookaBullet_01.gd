@@ -29,16 +29,10 @@ func _on_VisibilityNotifier2D_screen_exited():
 	pass
 
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(_anim_name):
 	
 	yield(get_tree().create_timer(0.2), "timeout")
 	queue_free()
-	
-	pass
-
-
-func _on_Hitbox_area_entered(area):
-	
 	
 	pass
 

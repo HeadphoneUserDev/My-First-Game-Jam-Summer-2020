@@ -25,6 +25,8 @@ onready var scorePoint = get_parent().get_node("../CanvasLayer/Score")
 
 var bullet_particles = preload("res://Src/ParticleEffects/PistolPoof.tscn")
 
+onready var deathTimer = $DeathTimer
+
 func _ready():
 	
 	self.connect("enemy_dead", scorePoint, "score_event")
@@ -33,6 +35,8 @@ func _ready():
 	randomize()
 	
 	Global.enemy = self
+	
+	
 	
 	pass
 
@@ -65,13 +69,15 @@ func _process(delta):
 	
 	pass
 
-func death_anim(delta):
+func death_anim(_delta):
 	
 	modulate = Color.white
+	$DeathTimer.start() #An alternative for death animation
 	yield(get_tree().create_timer(1), "timeout")
+	#you should use an animation finish to queue_free but we're gonna use this one 4 now
+	#Will soon be replaced with death animation
 	emit_signal("enemy_dead")
 	queue_free()
-	#you should use an animation finish to queue_free but we're gonna use this one 4 now
 	
 	pass
 
@@ -82,7 +88,7 @@ func forward_movement(delta):
 	
 	pass
 
-func stop_movement(delta):
+func stop_movement(_delta):
 	
 	velocity = -velocity * 2
 	velocity = lerp(velocity, Vector2(0, 0), 0.1)
@@ -133,5 +139,15 @@ func _on_StunTimer_timeout():
 	
 	sprite.modulate = Color("ff0000")
 	stun = false
+	
+	pass
+
+
+func _on_DeathTimer_timeout():
+	
+	emit_signal("enemy_dead")
+	queue_free()
+	print("EnemyDead")
+	#you should use an animation finish to queue_free but we're gonna use this one 4 now
 	
 	pass

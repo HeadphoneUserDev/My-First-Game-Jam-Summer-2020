@@ -43,7 +43,7 @@ func _ready():
 	
 	pass
 
-func _process(delta):
+func _process(_delta):
 	
 	weaponChosentimer = rng.randi_range(minweaponTimer, maxweaponTimer)
 	weaponPickUptimer.wait_time = weaponChosentimer
