@@ -1,0 +1,61 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Src/ParticleEffects/HealthPickedUp.gd" type="Script" id=1]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0.19708, 1 )
+colors = PoolColorArray( 1, 0.984619, 0.015625, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 12 )
+
+[sub_resource type="Curve" id=4]
+min_value = -1024.0
+max_value = 200.0
+_data = [ Vector2( 0, -292.013 ), 0.0, 1711.89, 0, 0, Vector2( 1, -859.504 ), 1450.67, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="Curve" id=6]
+_data = [ Vector2( 0, 1 ), 0.0, 2.35498, 0, 0, Vector2( 0.50625, 0.553877 ), -0.638581, -0.638581, 0, 0, Vector2( 0.75, 0 ), -5.22567, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=10]
+resource_local_to_scene = true
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( 1, 1, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 100.0
+initial_velocity_random = 0.03
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 200.0
+linear_accel_random = 0.41
+linear_accel_curve = SubResource( 5 )
+scale = 12.0
+scale_random = 0.5
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 11 )
+hue_variation = 1.0
+hue_variation_random = 0.05
+
+[node name="HealthPickedUp" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Particles2D" type="Particles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 20
+one_shot = true
+explosiveness = 0.8
+local_coords = false
+process_material = SubResource( 10 )

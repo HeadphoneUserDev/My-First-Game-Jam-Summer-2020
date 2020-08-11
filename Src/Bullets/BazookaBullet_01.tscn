@@ -1,17 +1,105 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=18 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://Src/Bullets/BazookaBullet_01.gd" type="Script" id=2]
+[ext_resource path="res://MFGJ Sprites/Bullets/Bazooka_bullet.png" type="Texture" id=1]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="GDScript" id=1]
+resource_local_to_scene = true
+script/source = "extends Sprite
+
+var velocity = Vector2(1, 0)
+var speed = 10
+var max_speed = 1000
+var stop = 0
+
+var exploded = false
+
+var look_once = true
+var used = false
+
+var explosion_particles = preload(\"res://Src/ParticleEffects/Explosion.tscn\")
+var bazookaLaunchingparticles = preload(\"res://Src/ParticleEffects/BazookaLaunchingParticles.tscn\")
+var bazooka_boost = preload(\"res://Src/ParticleEffects/BazookaBoost.tscn\")
+
+func _ready():
+	
+	$AnimationPlayer.play(\"Launching\")
+	
+	pass
+
+func _process(delta):
+	
+	if look_once:
+		look_at(get_global_mouse_position())
+		look_once = false
+	
+	global_position += velocity.rotated(rotation) * speed * delta
+#	speed *= 65 * delta
+	speed = lerp(speed, max_speed, delta * 2)
+	
+	
+	
+	pass
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	
+#	$HitboxM/CollisionShape2D3.disabled = true
+#	$Hitbox/CollisionShape2D2.disabled = true
+#	$DetectHitBox/CollisionShape2D.disabled = true
+#	$ButtPosition/Particles2D.emitting = false
+#	$ButtPosition/Particles2D2.emitting = false
+#	yield(get_tree().create_timer(1), \"timeout\")
+	queue_free()
+	
+	pass
+
+
+func _on_AnimationPlayer_animation_finished():
+	
+	yield(get_tree().create_timer(0.2), \"timeout\")
+	queue_free()
+	
+	pass
+
+func _launching_Animation_finished():
+	
+	$AnimationPlayer.queue(\"Launching\")
+	$AnimationPlayer.play(\"Boost\")
+	
+	pass
+
+func _on_DetectHitBox_body_entered(body):
+	
+	if body.is_in_group(\"Enemy\") and body.dead == false:
+		if exploded == false:
+			$AnimationPlayer.play(\"BazookaExplosion\")
+			velocity = Vector2.ZERO
+	#		speed = lerp(speed, stop, 1)
+			exploded = true
+			$DetectHitBox.queue_free()
+		
+		if Global.node_creation_parent != null:
+			var explosion_particles_intance = Global.instance_node(explosion_particles, global_position, Global.node_creation_parent)
+			explosion_particles_intance.rotation = velocity.angle()
+			explosion_particles_intance.get_node(\"Particles2D\").emitting = true
+			explosion_particles_intance.get_node(\"Particles2D2\").emitting = true
+	
+	
+	pass
+"
+
+[sub_resource type="CircleShape2D" id=18]
 radius = 36.2215
 
-[sub_resource type="CircleShape2D" id=2]
-radius = 52.0
+[sub_resource type="CircleShape2D" id=17]
+radius = 36.2215
 
-[sub_resource type="Animation" id=3]
-resource_name = "BazookaExplosion"
-length = 0.05
+[sub_resource type="CapsuleShape2D" id=16]
+radius = 20.0
+height = 72.0
+
+[sub_resource type="Animation" id=4]
+length = 0.4
 step = 0.01
 tracks/0/type = "value"
 tracks/0/path = NodePath("Hitbox/CollisionShape2D2:scale")
@@ -20,29 +108,243 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05 ),
-"transitions": PoolRealArray( 3.36359, 1 ),
+"times": PoolRealArray( 0, 0.01, 0.05 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 11, 11 ) ]
+"values": [ Vector2( 0.25, 0.25 ), Vector2( 2, 2 ), Vector2( 9, 9 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HitboxM/CollisionShape2D3:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.02, 0.03, 0.07, 0.08, 0.6, 0.65 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1e-05, 1e-05 ), Vector2( 1.5, 1.5 ), Vector2( 10, 10 ), Vector2( 11.5, 11.5 ), Vector2( 10, 10 ), Vector2( 1e-05, 1e-05 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("HitboxM/CollisionShape2D3:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.058 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ null ],
+"method": "_on_AnimationPlayer_animation_finished"
+} ]
 }
 
+[sub_resource type="Animation" id=5]
+resource_name = "Boost"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("ButtPosition/Particles2D:process_material:direction")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ButtPosition/Particles2D2:process_material:direction")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( -1, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "Launching"
+length = 0.25
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("ButtPosition/Particles2D:process_material:direction")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1, 6, 0 ), Vector3( -1, 2.5, 0 ), Vector3( -1, 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("ButtPosition/Particles2D2:process_material:direction")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( -1, -6, 0 ), Vector3( -1, -2.5, 0 ), Vector3( -1, 0, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.24 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "_launching_Animation_finished"
+} ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("ButtPosition/Particles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("ButtPosition/Particles2D2:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = false
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.25 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+
+[sub_resource type="CanvasItemMaterial" id=7]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0, 0.157895, 0.388158 )
+colors = PoolColorArray( 1, 0.987497, 0.140625, 1, 0.894531, 0.209656, 0, 1, 0.0654206, 0.0654206, 0.0654206, 1 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="Curve" id=10]
+min_value = -1024.0
+max_value = 200.0
+_data = [ Vector2( 0, 200 ), 0.0, 0.0, 0, 0, Vector2( 1, -978.709 ), 5647.1, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
+
+[sub_resource type="Curve" id=12]
+min_value = -5.0
+max_value = 3.0
+_data = [ Vector2( 0, 3 ), 0.0, 6.64032, 0, 0, Vector2( 0.331429, 0.756348 ), -8.48485, -8.48485, 0, 0, Vector2( 1, -1.93456 ), -2.48337, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
+
+[sub_resource type="ParticlesMaterial" id=14]
+emission_shape = 1
+emission_sphere_radius = 0.01
+flag_disable_z = true
+direction = Vector3( -1, 6, 0 )
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 0.5
+linear_accel_curve = SubResource( 11 )
+scale = 5.0
+scale_random = 0.7
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=15]
+emission_shape = 1
+emission_sphere_radius = 0.01
+flag_disable_z = true
+direction = Vector3( -1, -6, 0 )
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1000.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 0.5
+linear_accel_curve = SubResource( 11 )
+scale = 5.0
+scale_random = 0.7
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 9 )
+
 [node name="BazookaBullet_01" type="Sprite"]
-modulate = Color( 1, 0.552941, 0.00784314, 1 )
 scale = Vector2( 0.25, 0.25 )
+script = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 10, 10 )
 texture = ExtResource( 1 )
-script = ExtResource( 2 )
+
+[node name="HitboxM" type="Area2D" parent="." groups=[
+"EnemyDestroyerM",
+]]
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="HitboxM"]
+scale = Vector2( 1e-05, 1e-05 )
+shape = SubResource( 18 )
+disabled = true
 
 [node name="Hitbox" type="Area2D" parent="." groups=[
 "EnemyDestroyer",
 ]]
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Hitbox"]
-shape = SubResource( 1 )
+modulate = Color( 1, 0.0352941, 0.0352941, 1 )
+scale = Vector2( 0.25, 0.25 )
+shape = SubResource( 17 )
 
 [node name="DetectHitBox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DetectHitBox"]
-shape = SubResource( 2 )
+position = Vector2( 4, 0 )
+rotation = 1.5708
+shape = SubResource( 16 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 visible = false
@@ -50,7 +352,26 @@ position = Vector2( -1.90735e-06, 1.90735e-06 )
 scale = Vector2( 2.8, 2.8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/BazookaExplosion = SubResource( 3 )
+anims/BazookaExplosion = SubResource( 4 )
+anims/Boost = SubResource( 5 )
+anims/Launching = SubResource( 6 )
+
+[node name="ButtPosition" type="Position2D" parent="."]
+position = Vector2( -55.9997, -0.168541 )
+rotation = 0.00300966
+
+[node name="Particles2D" type="Particles2D" parent="ButtPosition"]
+material = SubResource( 7 )
+amount = 50
+lifetime = 0.8
+local_coords = false
+process_material = SubResource( 14 )
+
+[node name="Particles2D2" type="Particles2D" parent="ButtPosition"]
+material = SubResource( 7 )
+amount = 50
+lifetime = 0.8
+local_coords = false
+process_material = SubResource( 15 )
 [connection signal="body_entered" from="DetectHitBox" to="." method="_on_DetectHitBox_body_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
-[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

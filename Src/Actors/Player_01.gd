@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 signal healthChange
 signal hit
+signal expo_dead
 
 export var ACCELERATION = 1200
 export var MAX_SPEED = 0
@@ -19,6 +20,8 @@ var machineGun_bullet = preload("res://Src/Bullets/MachineGunBullet_01.tscn")
 var bazookaBullet = preload("res://Src/Bullets/BazookaBullet_01.tscn")
 var warpArea = preload("res://Src/Test/WarpArea.tscn")
 var warpArea2 = preload("res://Src/Test/WarpArea2.tscn")
+var bazookaBoost = preload("res://Src/ParticleEffects/BazookaBoost.tscn")
+var poof = preload("res://Src/ParticleEffects/PlayerPoof.tscn")
 
 var pistolReload = 0.5
 var machinegunReload = 0.1
@@ -29,20 +32,36 @@ var aim_weight = 0
 var can_shoot = true
 var is_dead = false
 var is_aiming = false
+var sceneReload = true
+var start_deadTimer = false
 var warpArea_used = false
 var warpArea2_used = true
 var healthFull = true
 var stun = false
+var got_hit = false
+var death_anim_played = false
+var is_using_weapon = false
+var picked_up = false
 var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
 var chosen_weapon4 = false
 
+
 onready var rng = RandomNumberGenerator.new()
 onready var camera = get_parent().get_node("Camera2D")
 onready var healthPickup = get_parent().get_node("HealthPickUp")
+onready var screenShake = get_parent().get_node("../Camera2D/ScreenShake")
+onready var deadTimer = $DeadTimer
+onready var bazookaGuide = $BazookaGuide
+
+var array = [1, 2, 3, 4]
+var lastNum = 1
+var num
 
 func _ready():
+	
+	randomize()
 	
 	if is_dead == false:
 		Global.player = self
@@ -50,19 +69,30 @@ func _ready():
 	elif is_dead == true:
 		Global.player = null
 		print("null")
+	
 	rng.randomize()
+#	array.shuffle()
 	
 	hp = max_hp
 	print(hp)
 	
+	self.connect("expo_dead", screenShake, "start", [0.2, 15, 16, 2])
 	self.connect("healthFull", healthPickup, "health_full")
 	emit_signal("healthChange", hp * 100/max_hp)
+#
+#	if is_dead == true:
+#		deadTimer.start()
+		
+	
+	
 	
 	pass
 
 func _exit_tree():
 	
 	Global.player = null
+#	if sceneReload == false:
+#		get_tree().reload_current_scene()
 	
 	pass
 
@@ -76,13 +106,18 @@ func _physics_process(delta):
 	
 	if hp <= 0:
 		is_dead = true
-		visible = false
 		
 	
 	if is_dead == false:
 		move_state(delta)
-	elif is_dead == true:
-		dead_state()
+	else:
+		_exit_tree()
+		$CollisionShape2D.disabled = true
+		$Hitbox/CollisionShape2D.disabled = true
+		$AnimatedSprite.playing = false
+		if death_anim_played == false:
+			$AnimationPlayer.play("Death_anim")
+			death_anim_played = true
 	
 #	aim_zoom()
 	
@@ -99,10 +134,25 @@ func move_state(delta):
 	if input_vector != Vector2.ZERO and stun == false:
 		if is_aiming == false:
 			velocity = velocity.move_toward(input_vector * MAX_SPEED, ACCELERATION * delta)
+			if chosen_weapon3 == false:
+				$AnimatedSprite.play("Run")
+			else:
+				$AnimatedSprite.play("BazookaAim")
 		else:
 			velocity = velocity.move_toward(input_vector * AIM_SPEED, ACCELERATION * delta)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
+		if chosen_weapon3 == false and is_using_weapon == false and got_hit == false:
+			$AnimatedSprite.play("Idle")
+		elif chosen_weapon1 and got_hit == false:
+			$AnimatedSprite.play("PistolAim")
+		elif chosen_weapon2 and got_hit == false:
+			$AnimatedSprite.play("MachineGunAim")
+		elif chosen_weapon3 and got_hit == false:
+			$AnimatedSprite.play("BazookaAim")
+		elif got_hit and is_dead == false:
+			$AnimatedSprite.play("Hit")
+#			$AnimationPlayer.play("Death_anim")
 #		if stun == true:
 #			velocity = velocity.move_toward(Vector2.ZERO, FRICTION * delta)
 	
@@ -139,7 +189,10 @@ func move_state(delta):
 			chosen_weapon1 = false
 			chosen_weapon2 = false
 			chosen_weapon3 = false
-#
+	
+	look_at(get_global_mouse_position())
+	bazookaGuide.look_at(get_global_mouse_position())
+	
 	pistol_shoot()
 	machineGun_shoot()
 	bazooka_shoot()
@@ -152,9 +205,11 @@ func move_state(delta):
 
 func dead_state():
 	
-	_exit_tree()
+#
+#	start_deadTimer = true
 	yield(get_tree().create_timer(1), "timeout")
 	get_tree().reload_current_scene()
+	
 	
 	pass
 
@@ -171,13 +226,16 @@ func pistol_shoot():
 		AIM_SPEED = 175
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon1 == true and stun == false:
-		Global.instance_node(bullet, global_position, Global.node_creation_parent)
+		Global.instance_node(bullet, $PistolGuide.global_position, Global.node_creation_parent)
 		$ReloadSpeed.wait_time = pistolReload
 		$ReloadSpeed.start()
+		$AnimatedSprite.play("PistolAim")
 		can_shoot = false
 		is_aiming = true
+		is_using_weapon = true
 	elif Input.is_action_just_released("click"):
 		is_aiming = false
+		is_using_weapon = false
 	
 	pass
 
@@ -188,13 +246,16 @@ func machineGun_shoot():
 		AIM_SPEED = 125
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon2 == true and stun == false:
-		Global.instance_node(machineGun_bullet, global_position, Global.node_creation_parent)
+		Global.instance_node(machineGun_bullet, $MachineGunGuide.global_position, Global.node_creation_parent)
 		$ReloadSpeed.wait_time = machinegunReload
 		$ReloadSpeed.start()
+		$AnimatedSprite.play("MachineGunAim")
 		can_shoot = false
 		is_aiming = true
+		is_using_weapon = true
 	elif Input.is_action_just_released("click"):
 		is_aiming = false
+		is_using_weapon = false
 	
 	pass
 
@@ -205,13 +266,15 @@ func bazooka_shoot():
 		AIM_SPEED = 50
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon3 == true and stun == false:
-		Global.instance_node(bazookaBullet, global_position, Global.node_creation_parent)
+		Global.instance_node(bazookaBullet, bazookaGuide.global_position, Global.node_creation_parent)
 		$ReloadSpeed.wait_time = bazookaReload
 		$ReloadSpeed.start()
 		can_shoot = false
 		is_aiming = true
+		is_using_weapon = true
 	elif Input.is_action_just_released("click"):
 		is_aiming = false
+		is_using_weapon = false
 	
 	pass
 
@@ -254,15 +317,29 @@ func _on_Hitbox_area_entered(area):
 	if is_dead == false:
 		if area.is_in_group("Enemy"): 
 			knockback = area.knockback_vector * 350
-			modulate = Color("ff0000")
+			modulate = Color("0000ff")
 			hp -= 1
 			emit_signal("healthChange", hp * 100/max_hp)
 			emit_signal("hit")
+			got_hit = true
 			stun = true
 			$GotHitTimer.start()
 			print(hp)
 			
-			var weapon_choice = rng.randi_range(1, 4)
+			var weapon_choice
+			
+			array.erase(lastNum)
+			
+			array.shuffle()
+			num = array.back()
+			array.append(lastNum)
+			weapon_choice = num
+			lastNum = num
+			array.erase(num)
+			print(lastNum)
+			print(array)
+			
+			
 			chosen_weapon1 = weapon_choice == 1
 			chosen_weapon2 = weapon_choice == 2
 			chosen_weapon3 = weapon_choice == 3
@@ -279,19 +356,51 @@ func _on_Hitbox_area_entered(area):
 				healthFull = true
 			
 		elif area.is_in_group("WeaponPickUp"):
-			var weapon_choice = rng.randi_range(1, 4)
+			
+#			var chosenWeapon
+#			var lastWeapon
+#			var weapon_choice = rng.randi_range(1, 4)
+#			lastWeapon = weapon_choice
+#
+#			while lastWeapon == weapon_choice:
+#				weapon_choice = rng.randi_range(1, 4)
+			
+#			while weapon_choice == 1 or weapon_choice == 2 or weapon_choice == 3 or weapon_choice == 4:
+#				weapon_choice = rng.randi_range(1, 4)
+			
+			
+			var weapon_choice
+			
+			array.erase(lastNum)
+			
+			array.shuffle()
+			num = array.back()
+			array.append(lastNum)
+			weapon_choice = num
+			lastNum = num
+			array.erase(num)
+			print(lastNum)
+			print(array)
+			
+			
 			chosen_weapon1 = weapon_choice == 1
 			chosen_weapon2 = weapon_choice == 2
 			chosen_weapon3 = weapon_choice == 3
 			chosen_weapon4 = weapon_choice == 4
-			print(weapon_choice)
+			
+#			var lastWeapon
+#			var weapon_choice:int = randi() % array.size() + 1
+#			lastWeapon = weapon_choice
+#			print(weapon_choice)
+			
+			
 		elif area.is_in_group("ReloadUpgrade"):
 			if chosen_weapon1 == true:
-				pistolReload *= 0.85
+				pistolReload *= 0.9
 			elif chosen_weapon2 == true:
 				machinegunReload *= 0.98
 			elif chosen_weapon3 == true:
-				bazookaReload *= 0.92
+				bazookaReload *= 0.95
 		
 	
 	pass
@@ -301,5 +410,23 @@ func _on_GotHitTimer_timeout():
 	
 	modulate = Color.white
 	stun = false
+	got_hit = false
+	
+	pass
+
+
+func _on_DeadTimer_timeout():
+	
+	print("yep")
+	sceneReload = false
+	_exit_tree()
+	
+	pass
+
+func screen_shake():
+	
+	emit_signal("expo_dead")
+	var poof_instance = Global.instance_node(poof, global_position, Global.node_creation_parent)
+	poof_instance.get_node("Particles2D").emitting = true
 	
 	pass

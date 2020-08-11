@@ -1,13 +1,131 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=40 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://Src/Actors/Player_01.gd" type="Script" id=2]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Idle/MFGJ_Idle.png" type="Texture" id=3]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run5.png" type="Texture" id=4]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run6.png" type="Texture" id=5]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run11.png" type="Texture" id=6]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run12.png" type="Texture" id=7]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run4.png" type="Texture" id=8]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run10.png" type="Texture" id=9]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run2.png" type="Texture" id=10]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run8.png" type="Texture" id=11]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run3.png" type="Texture" id=12]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run1.png" type="Texture" id=13]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run9.png" type="Texture" id=14]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Run/Player_run7.png" type="Texture" id=15]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Aim/Pistol_aim.png" type="Texture" id=16]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim2.png" type="Texture" id=17]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim9.png" type="Texture" id=18]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim10.png" type="Texture" id=19]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim7.png" type="Texture" id=20]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim8.png" type="Texture" id=21]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Hit/Player_hit.png" type="Texture" id=22]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Aim/Bazooka_aim.png" type="Texture" id=23]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim3.png" type="Texture" id=24]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim4.png" type="Texture" id=25]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim1.png" type="Texture" id=26]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim6.png" type="Texture" id=27]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim11.png" type="Texture" id=28]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim12.png" type="Texture" id=29]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim13.png" type="Texture" id=30]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim14.png" type="Texture" id=31]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim15.png" type="Texture" id=32]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim16.png" type="Texture" id=33]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim17.png" type="Texture" id=34]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Aim/MachineGunl_aim.png" type="Texture" id=35]
+[ext_resource path="res://MFGJ Sprites/Actors/Player/Death/Player_death_anim5.png" type="Texture" id=36]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 15, 15 )
+[sub_resource type="Animation" id=1]
+resource_name = "Death_anim"
+length = 1.05
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7, 0.75, 0.8, 0.85, 0.9, 0.95, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.6, 1.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [  ],
+"method": "screen_shake"
+}, {
+"args": [  ],
+"method": "dead_state"
+} ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:animation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1.05 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ "Death", "Death" ]
+}
 
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 15, 14 )
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 26 ), ExtResource( 17 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 36 ), ExtResource( 27 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 28 ), ExtResource( 29 ), ExtResource( 30 ), ExtResource( 31 ), ExtResource( 32 ), ExtResource( 33 ), ExtResource( 34 ) ],
+"loop": false,
+"name": "Death",
+"speed": 16.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "Idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 22 ) ],
+"loop": true,
+"name": "Hit",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 10 ), ExtResource( 12 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 15 ), ExtResource( 11 ), ExtResource( 14 ), ExtResource( 9 ), ExtResource( 6 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "Run",
+"speed": 24.0
+}, {
+"frames": [ ExtResource( 23 ) ],
+"loop": true,
+"name": "BazookaAim",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 35 ) ],
+"loop": true,
+"name": "MachineGunAim",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 16 ) ],
+"loop": true,
+"name": "PistolAim",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 9.0
+height = 22.0
+
+[sub_resource type="CapsuleShape2D" id=4]
+height = 22.0
 
 [node name="Player_01" type="KinematicBody2D" groups=[
 "Player_01",
@@ -17,13 +135,19 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Sprite" type="Sprite" parent="."]
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 1 )
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Death_anim = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+rotation = 1.5708
+scale = Vector2( 2.5, 2.5 )
+frames = SubResource( 2 )
+animation = "Death"
+frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="ReloadSpeed" type="Timer" parent="."]
 wait_time = 0.1
@@ -37,10 +161,26 @@ __meta__ = {
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 visible = false
-shape = SubResource( 2 )
+shape = SubResource( 4 )
 
 [node name="GotHitTimer" type="Timer" parent="."]
 wait_time = 0.25
+
+[node name="DeadTimer" type="Timer" parent="."]
+wait_time = 0.2
+
+[node name="PistolGuide" type="Position2D" parent="."]
+visible = false
+position = Vector2( 29, 0 )
+
+[node name="MachineGunGuide" type="Position2D" parent="."]
+visible = false
+position = Vector2( 34, 0 )
+
+[node name="BazookaGuide" type="Position2D" parent="."]
+visible = false
+position = Vector2( 22, 15 )
 [connection signal="timeout" from="ReloadSpeed" to="." method="_on_ReloadSpeed_timeout"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
 [connection signal="timeout" from="GotHitTimer" to="." method="_on_GotHitTimer_timeout"]
+[connection signal="timeout" from="DeadTimer" to="." method="_on_DeadTimer_timeout"]

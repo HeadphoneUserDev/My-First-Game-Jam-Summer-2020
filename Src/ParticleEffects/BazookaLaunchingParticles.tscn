@@ -1,0 +1,210 @@
+[gd_scene load_steps=15 format=2]
+
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.157895, 0.388158 )
+colors = PoolColorArray( 1, 0.987497, 0.140625, 1, 0.894531, 0.209656, 0, 1, 0.0654206, 0.0654206, 0.0654206, 1 )
+
+[sub_resource type="GradientTexture" id=3]
+gradient = SubResource( 2 )
+
+[sub_resource type="Curve" id=4]
+min_value = -1024.0
+max_value = 200.0
+_data = [ Vector2( 0, 200 ), 0.0, 0.0, 0, 0, Vector2( 1, -978.709 ), 5647.1, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="Curve" id=6]
+min_value = -5.0
+max_value = 3.0
+_data = [ Vector2( 0, 2.07056 ), 0.0, 6.64032, 0, 0, Vector2( 0.331429, 0.756348 ), -8.48485, -8.48485, 0, 0, Vector2( 1, -1.93456 ), -2.48337, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=7]
+curve = SubResource( 6 )
+
+[sub_resource type="ParticlesMaterial" id=8]
+emission_shape = 1
+emission_sphere_radius = 0.01
+flag_disable_z = true
+direction = Vector3( -1, 1, 0 )
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 0.5
+linear_accel_curve = SubResource( 5 )
+scale = 7.0
+scale_random = 0.7
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=9]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( -1, -1, 0 )
+spread = 15.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 0.5
+linear_accel_curve = SubResource( 5 )
+scale = 7.0
+scale_random = 0.7
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=10]
+emission_shape = 1
+emission_sphere_radius = 0.01
+flag_disable_z = true
+direction = Vector3( -1, 0, 0 )
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 500.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 0.5
+linear_accel_curve = SubResource( 5 )
+scale = 7.0
+scale_random = 0.7
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+direction = Vector3( -1, 0, 0 )
+spread = 15.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 500.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+linear_accel = 100.0
+linear_accel_random = 0.5
+linear_accel_curve = SubResource( 5 )
+scale = 7.0
+scale_random = 0.7
+scale_curve = SubResource( 7 )
+color_ramp = SubResource( 3 )
+
+[sub_resource type="Environment" id=12]
+background_mode = 4
+glow_enabled = true
+glow_levels/2 = true
+glow_levels/4 = true
+glow_intensity = 1.12
+glow_strength = 0.68
+glow_blend_mode = 0
+
+[sub_resource type="Animation" id=13]
+resource_name = "Launching"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Particles2D3:emitting")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.35 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Particles2D3:process_material:direction")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.34 ),
+"transitions": PoolRealArray( 1.27456, 1 ),
+"update": 0,
+"values": [ Vector3( -1, 1, 0 ), Vector3( -1, 0, 0 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Particles2D4:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.35 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Particles2D4:process_material:direction")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.34 ),
+"transitions": PoolRealArray( 1.27456, 1 ),
+"update": 0,
+"values": [ Vector3( -1, -1, 0 ), Vector3( -1, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=14]
+resource_name = "Launching2"
+step = 0.01
+
+[node name="BazookaLaunchingParticles" type="Node2D"]
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Particles2D" type="Particles2D" parent="."]
+material = SubResource( 1 )
+amount = 50
+lifetime = 0.8
+local_coords = false
+process_material = SubResource( 8 )
+
+[node name="Particles2D2" type="Particles2D" parent="."]
+material = SubResource( 1 )
+amount = 50
+lifetime = 0.8
+local_coords = false
+process_material = SubResource( 9 )
+
+[node name="Particles2D3" type="Particles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 50
+lifetime = 0.35
+local_coords = false
+process_material = SubResource( 10 )
+
+[node name="Particles2D4" type="Particles2D" parent="."]
+material = SubResource( 1 )
+emitting = false
+amount = 50
+lifetime = 0.35
+local_coords = false
+process_material = SubResource( 11 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 12 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Launching = SubResource( 13 )
+anims/Launching2 = SubResource( 14 )

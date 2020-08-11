@@ -17,6 +17,7 @@ var look_once = true
 
 #onready var warpArea2 = get_parent().get_node("WarpArea2")
 onready var player_01 = get_parent().get_node("Player_01")
+var teleportedParticles = preload("res://Src/ParticleEffects/TeleportedParticles.tscn")
 
 func _ready():
 	
@@ -41,6 +42,10 @@ func _process(delta):
 	
 	
 	if player_in_teleport1_allow == false:
+		if Global.node_creation_parent != null:
+			var teleportedParticles_instance = Global.instance_node(teleportedParticles, global_position, Global.node_creation_parent)
+			teleportedParticles_instance.rotation = velocity.angle()
+			teleportedParticles_instance.get_node("Particles2D").emitting = true
 		queue_free()
 	
 	pass

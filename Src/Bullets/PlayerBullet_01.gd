@@ -11,6 +11,7 @@ var look_once = true
 var bullet_particles = preload("res://Src/ParticleEffects/PistolPoof.tscn")
 
 onready var hitBox = $Hitbox
+onready var trail = $Line2D
 
 func _ready():
 	
