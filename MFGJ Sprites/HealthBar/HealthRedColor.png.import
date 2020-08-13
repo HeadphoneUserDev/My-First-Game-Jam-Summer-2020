@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/WarpDevice1.png-fe60483769f001e80a96b595c9f2475d.stex"
+path="res://.import/HealthRedColor.png-43bd1fc3bc8e9699ef59c6f244d4bb7c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MFGJ Sprites/Cursur/WarpDevice1.png"
-dest_files=[ "res://.import/WarpDevice1.png-fe60483769f001e80a96b595c9f2475d.stex" ]
+source_file="res://MFGJ Sprites/HealthBar/HealthRedColor.png"
+dest_files=[ "res://.import/HealthRedColor.png-43bd1fc3bc8e9699ef59c6f244d4bb7c.stex" ]
 
 [params]
 

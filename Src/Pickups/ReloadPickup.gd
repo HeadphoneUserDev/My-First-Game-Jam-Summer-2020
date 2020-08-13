@@ -11,7 +11,7 @@ func _ready():
 	
 	pass
 
-func _process(delta):
+func _process(_delta):
 	
 	if entered == false:
 		var explode_instance = Global.instance_node(explode, global_position, Global.node_creation_parent)

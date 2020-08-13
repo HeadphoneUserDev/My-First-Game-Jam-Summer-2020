@@ -5,17 +5,17 @@
 [ext_resource path="res://Src/Bullets/Hitbox.gd" type="Script" id=3]
 [ext_resource path="res://Src/Bullets/PistolTrail.gd" type="Script" id=4]
 
-[sub_resource type="CanvasItemMaterial" id=4]
+[sub_resource type="CanvasItemMaterial" id=1]
 resource_local_to_scene = true
 blend_mode = 1
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 24, 16 )
 
-[sub_resource type="Curve" id=2]
+[sub_resource type="Curve" id=3]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=4]
 colors = PoolColorArray( 0, 0, 0, 0, 0.992188, 0.977169, 0.0310059, 1 )
 
 [node name="PlayerBullet_01" type="Sprite"]
@@ -24,7 +24,7 @@ script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 0.901961, 0.901961, 0.901961, 1 )
-material = SubResource( 4 )
+material = SubResource( 1 )
 position = Vector2( 10, 0 )
 rotation = 1.5708
 scale = Vector2( 15, 15 )
@@ -37,7 +37,7 @@ script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
 visible = false
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 visible = false
@@ -47,8 +47,8 @@ visible = false
 [node name="PistolTrail" type="Line2D" parent="Position2D"]
 z_index = -1
 width = 7.0
-width_curve = SubResource( 2 )
-gradient = SubResource( 3 )
+width_curve = SubResource( 3 )
+gradient = SubResource( 4 )
 script = ExtResource( 4 )
 trailLength = 10
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

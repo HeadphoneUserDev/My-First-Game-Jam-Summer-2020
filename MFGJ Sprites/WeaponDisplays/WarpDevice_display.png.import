@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/WarpDevice1.png-fe60483769f001e80a96b595c9f2475d.stex"
+path="res://.import/WarpDevice_display.png-d5d4108a6e1d6f7828c54c1e287a55a2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MFGJ Sprites/Cursur/WarpDevice1.png"
-dest_files=[ "res://.import/WarpDevice1.png-fe60483769f001e80a96b595c9f2475d.stex" ]
+source_file="res://MFGJ Sprites/WeaponDisplays/WarpDevice_display.png"
+dest_files=[ "res://.import/WarpDevice_display.png-d5d4108a6e1d6f7828c54c1e287a55a2.stex" ]
 
 [params]
 

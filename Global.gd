@@ -6,6 +6,8 @@ var node_creation_parent = null
 var player = null
 var enemy = null
 
+var points = 0
+var highscore = 0
 var enemy_count = 0
 
 func instance_node(node, location, parent):

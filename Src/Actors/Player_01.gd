@@ -3,6 +3,7 @@ extends KinematicBody2D
 signal healthChange
 signal hit
 signal expo_dead
+signal weapon_change(value)
 
 export var ACCELERATION = 1200
 export var MAX_SPEED = 0
@@ -42,10 +43,12 @@ var got_hit = false
 var death_anim_played = false
 var is_using_weapon = false
 var picked_up = false
+var weaponDisplay_connected = false
 var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
 var chosen_weapon4 = false
+var signaled = false
 
 
 onready var rng = RandomNumberGenerator.new()
@@ -85,7 +88,6 @@ func _ready():
 		
 	
 	
-	
 	pass
 
 func _exit_tree():
@@ -97,6 +99,20 @@ func _exit_tree():
 	pass
 
 func _physics_process(delta):
+	
+	if signaled == false:
+		if chosen_weapon1 == true:
+			emit_signal("weapon_change", 1)
+			signaled = true
+		elif chosen_weapon2 == true:
+			emit_signal("weapon_change", 2)
+			signaled = true
+		elif chosen_weapon3 == true:
+			emit_signal("weapon_change", 3)
+			signaled = true
+		elif chosen_weapon4 == true:
+			emit_signal("weapon_change", 4)
+			signaled = true
 	
 	knockback = knockback.move_toward(Vector2.ZERO, 1000 * delta)
 	knockback = move_and_slide(knockback)
@@ -159,7 +175,8 @@ func move_state(delta):
 	move()
 	
 	if Input.is_action_just_pressed("weapon_change1"):
-
+		
+		signaled = false
 		if chosen_weapon1 == false:
 			chosen_weapon1 = true
 			chosen_weapon2 = false
@@ -167,7 +184,8 @@ func move_state(delta):
 			chosen_weapon4 = false
 
 	elif Input.is_action_just_pressed("weapon_change2"):
-
+		
+		signaled = false
 		if chosen_weapon2 == false:
 			chosen_weapon2 = true
 			chosen_weapon1 = false
@@ -175,7 +193,8 @@ func move_state(delta):
 			chosen_weapon4 = false
 
 	elif Input.is_action_just_pressed("weapon_change3"):
-
+		
+		signaled = false
 		if chosen_weapon3 == false:
 			chosen_weapon3 = true
 			chosen_weapon1 = false
@@ -183,7 +202,8 @@ func move_state(delta):
 			chosen_weapon4 = false
 
 	elif Input.is_action_just_pressed("weapon_change4"):
-
+		
+		signaled = false
 		if chosen_weapon4 == false:
 			chosen_weapon4 = true
 			chosen_weapon1 = false
@@ -316,6 +336,7 @@ func _on_Hitbox_area_entered(area):
 	
 	if is_dead == false:
 		if area.is_in_group("Enemy"): 
+			signaled = false
 			knockback = area.knockback_vector * 350
 			modulate = Color("0000ff")
 			hp -= 1
@@ -345,6 +366,8 @@ func _on_Hitbox_area_entered(area):
 			chosen_weapon3 = weapon_choice == 3
 			chosen_weapon4 = weapon_choice == 4
 			
+			
+			
 		elif area.is_in_group("Health") and hp != 5:
 			hp += 2
 			hp = clamp(hp, 0, max_hp)
@@ -356,6 +379,8 @@ func _on_Hitbox_area_entered(area):
 				healthFull = true
 			
 		elif area.is_in_group("WeaponPickUp"):
+			
+			signaled = false
 			
 #			var chosenWeapon
 #			var lastWeapon

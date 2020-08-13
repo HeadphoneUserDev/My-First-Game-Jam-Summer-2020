@@ -34,6 +34,8 @@ var camera_changed = false
 
 func _ready():
 	
+#	Input.set_custom_mouse_cursor(load("res://MFGJ Sprites/Cursur/WarpDevice2.png"), Input.CURSOR_ARROW, Vector2(16, 16))
+	
 	Global.node_creation_parent = self
 	rng.randomize()
 	weaponPickUptimer.start()

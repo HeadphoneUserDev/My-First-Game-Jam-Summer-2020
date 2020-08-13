@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/WarpDevice1.png-fe60483769f001e80a96b595c9f2475d.stex"
+path="res://.import/Bazooka_display.png-62cdcdc9d492d97bc3526c761d1f2c46.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://MFGJ Sprites/Cursur/WarpDevice1.png"
-dest_files=[ "res://.import/WarpDevice1.png-fe60483769f001e80a96b595c9f2475d.stex" ]
+source_file="res://MFGJ Sprites/WeaponDisplays/Bazooka_display.png"
+dest_files=[ "res://.import/Bazooka_display.png-62cdcdc9d492d97bc3526c761d1f2c46.stex" ]
 
 [params]
 

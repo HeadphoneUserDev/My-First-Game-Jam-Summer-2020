@@ -95,7 +95,6 @@ func _process(delta):
 func death_anim():
 	
 	queue_free()
-	print("Enemy Dead")
 #	$DeathTimer.start() #An alternative for death animation
 #	yield(get_tree().create_timer(1), "timeout")
 #	#you should use an animation finish to queue_free but we're gonna use this one 4 now

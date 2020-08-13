@@ -6,7 +6,9 @@ func _ready():
 func score_event():
 	
 	var score_value = 1 + randi()%5
-	text = str(int(text) + score_value)
+	Global.points += score_value
+	text = str(int(Global.points))
+#	Global.points = text
 	
 	var score_notification = load("res://Src/ScoreNotifications/BaseN.tscn").instance()
 	get_node("..").add_child(score_notification)

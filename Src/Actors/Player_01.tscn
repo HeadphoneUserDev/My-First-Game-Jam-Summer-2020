@@ -143,7 +143,6 @@ rotation = 1.5708
 scale = Vector2( 2.5, 2.5 )
 frames = SubResource( 2 )
 animation = "Death"
-frame = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false

@@ -1,0 +1,524 @@
+[gd_scene load_steps=33 format=2]
+
+[ext_resource path="res://Src/HUD/Highscore.gd" type="Script" id=1]
+[ext_resource path="res://Src/Arenas/Score.gd" type="Script" id=2]
+[ext_resource path="res://assets/montserrat_extrabold.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://MFGJ Sprites/HealthBar/HealthWhiteColor.png" type="Texture" id=4]
+[ext_resource path="res://MFGJ Sprites/HealthBar/HealthOverFrame.png" type="Texture" id=5]
+[ext_resource path="res://MFGJ Sprites/HealthBar/HealthUnderFrame.png" type="Texture" id=6]
+[ext_resource path="res://Src/HUD/CanvasLayer.gd" type="Script" id=7]
+[ext_resource path="res://MFGJ Sprites/HealthBar/HealthOrangeColor.png" type="Texture" id=8]
+[ext_resource path="res://MFGJ Sprites/WeaponDisplays/Pistol_display.png" type="Texture" id=9]
+[ext_resource path="res://MFGJ Sprites/WeaponDisplays/MachineGun_display.png" type="Texture" id=10]
+[ext_resource path="res://MFGJ Sprites/WeaponDisplays/Bazooka_display.png" type="Texture" id=11]
+[ext_resource path="res://MFGJ Sprites/WeaponDisplays/WarpDevice_display.png" type="Texture" id=12]
+
+[sub_resource type="DynamicFont" id=1]
+size = 100
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="Animation" id=3]
+resource_name = "bazooka_appear"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("WeaponDisplay/Bazooka:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.5, 3.5, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("WeaponDisplay/Bazooka:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("WeaponDisplay/Bazooka/Particles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 2.9, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("WeaponDisplay/Particles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("HealthBar:texture_progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 8 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 8 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "machinegun_appear"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("WeaponDisplay/MachineGun:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.5, 3.5, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("WeaponDisplay/MachineGun:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("WeaponDisplay/MachineGun/Particles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 2.9, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("WeaponDisplay/Particles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("WeaponDisplay/Pistol:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.5, 3.5, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("WeaponDisplay/Pistol:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2, 4 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("WeaponDisplay/Pistol/Particles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 2.9, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("WeaponDisplay/Particles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "warpdevice_appear"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("WeaponDisplay/WarpDevice:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.2, 0.5, 3.5, 4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("WeaponDisplay/WarpDevice:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("WeaponDisplay/WarpDevice/Particles2D:emitting")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.2, 2.9, 3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, true, false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("WeaponDisplay/Particles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ false, true, false ]
+}
+
+[sub_resource type="Animation" id=21]
+resource_name = "healthbar_flash"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("HealthBar:texture_progress")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.05, 0.1, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ ExtResource( 8 ), ExtResource( 4 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 8 ) ]
+}
+
+[sub_resource type="CanvasItemMaterial" id=8]
+blend_mode = 1
+
+[sub_resource type="Curve" id=9]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.757847, 0.777484 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
+
+[sub_resource type="ParticlesMaterial" id=11]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+scale_random = 0.5
+scale_curve = SubResource( 10 )
+
+[sub_resource type="CanvasItemMaterial" id=12]
+blend_mode = 1
+
+[sub_resource type="ParticlesMaterial" id=13]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+scale_random = 0.5
+scale_curve = SubResource( 10 )
+
+[sub_resource type="CanvasItemMaterial" id=14]
+blend_mode = 1
+
+[sub_resource type="ParticlesMaterial" id=15]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+scale_random = 0.5
+scale_curve = SubResource( 10 )
+
+[sub_resource type="CanvasItemMaterial" id=16]
+blend_mode = 1
+
+[sub_resource type="ParticlesMaterial" id=17]
+emission_shape = 1
+emission_sphere_radius = 1.0
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 50.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 5.0
+scale_random = 0.5
+scale_curve = SubResource( 10 )
+color = Color( 0.00784314, 0.890196, 0.992157, 1 )
+
+[sub_resource type="Curve" id=18]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.757847, 0.694 ), -1.29745, -1.29745, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=19]
+curve = SubResource( 18 )
+
+[sub_resource type="ParticlesMaterial" id=20]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 200.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 15.0
+scale_random = 0.5
+scale_curve = SubResource( 19 )
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource( 7 )
+
+[node name="Score" type="Label" parent="."]
+modulate = Color( 0.901961, 0.901961, 0.901961, 0.807843 )
+margin_right = 1280.0
+margin_bottom = 147.0
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+valign = 1
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Highscore" type="Label" parent="."]
+modulate = Color( 0.901961, 0.901961, 0.901961, 0.807843 )
+margin_left = 320.0
+margin_top = 600.0
+margin_right = 1600.0
+margin_bottom = 747.0
+rect_scale = Vector2( 0.5, 0.5 )
+custom_fonts/font = SubResource( 1 )
+text = "0"
+align = 1
+valign = 1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.0
+margin_top = -1.0
+margin_right = 1.0
+margin_bottom = -1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthBar" type="TextureProgress" parent="."]
+modulate = Color( 1, 1, 1, 0.768627 )
+margin_left = 50.0
+margin_top = 500.0
+margin_right = 23.0
+margin_bottom = 233.0
+rect_scale = Vector2( 12, 8 )
+value = 50.0
+texture_under = ExtResource( 6 )
+texture_over = ExtResource( 5 )
+texture_progress = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="HealthBar"]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/bazooka_appear = SubResource( 3 )
+anims/healthBar_flash = SubResource( 4 )
+anims/machinegun_appear = SubResource( 5 )
+anims/pistol_appear = SubResource( 6 )
+anims/warpdevice_appear = SubResource( 7 )
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+anims/healthbar_flash = SubResource( 21 )
+
+[node name="WeaponDisplay" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Pistol" type="TextureRect" parent="WeaponDisplay"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 870.0
+margin_top = 550.0
+margin_right = 1020.0
+margin_bottom = 700.0
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Particles2D" type="Particles2D" parent="WeaponDisplay/Pistol"]
+show_behind_parent = true
+material = SubResource( 8 )
+position = Vector2( 72.9999, 54 )
+emitting = false
+amount = 10
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 11 )
+
+[node name="MachineGun" type="TextureRect" parent="WeaponDisplay"]
+modulate = Color( 1, 1, 1, 0 )
+margin_left = 848.0
+margin_top = 513.0
+margin_right = 1048.0
+margin_bottom = 713.0
+texture = ExtResource( 10 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Particles2D" type="Particles2D" parent="WeaponDisplay/MachineGun"]
+show_behind_parent = true
+material = SubResource( 12 )
+position = Vector2( 97.0001, 91 )
+emitting = false
+amount = 10
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 13 )
+
+[node name="Bazooka" type="TextureRect" parent="WeaponDisplay"]
+margin_left = 792.0
+margin_top = 486.0
+margin_right = 1092.0
+margin_bottom = 736.0
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Particles2D" type="Particles2D" parent="WeaponDisplay/Bazooka"]
+show_behind_parent = true
+material = SubResource( 14 )
+position = Vector2( 153, 118 )
+amount = 10
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 15 )
+
+[node name="WarpDevice" type="TextureRect" parent="WeaponDisplay"]
+margin_left = 870.0
+margin_top = 530.0
+margin_right = 1020.0
+margin_bottom = 680.0
+texture = ExtResource( 12 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Particles2D" type="Particles2D" parent="WeaponDisplay/WarpDevice"]
+show_behind_parent = true
+material = SubResource( 16 )
+position = Vector2( 75, 74 )
+amount = 10
+lifetime = 2.0
+local_coords = false
+process_material = SubResource( 17 )
+
+[node name="Particles2D" type="Particles2D" parent="WeaponDisplay"]
+position = Vector2( 944, 604 )
+emitting = false
+amount = 15
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.8
+local_coords = false
+process_material = SubResource( 20 )
+[connection signal="animation_finished" from="AnimationPlayer2" to="." method="_on_AnimationPlayer2_animation_finished"]
