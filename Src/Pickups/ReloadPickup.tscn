@@ -1,36 +1,37 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
+[ext_resource path="res://MFGJ Sound Effects/Powerup.wav" type="AudioStream" id=1]
 [ext_resource path="res://Src/Pickups/ReloadPickup.gd" type="Script" id=2]
 [ext_resource path="res://MFGJ Sprites/Pickups/ReloadSpeed_pickup.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 19.0
 
-[sub_resource type="CanvasItemMaterial" id=11]
+[sub_resource type="CanvasItemMaterial" id=2]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=13]
+[sub_resource type="Gradient" id=3]
 offsets = PoolRealArray( 0.481752, 1 )
 colors = PoolColorArray( 0.986566, 0.661442, 0.0115613, 1, 1, 1, 1, 1 )
 
-[sub_resource type="GradientTexture" id=14]
-gradient = SubResource( 13 )
+[sub_resource type="GradientTexture" id=4]
+gradient = SubResource( 3 )
 
-[sub_resource type="Curve" id=15]
+[sub_resource type="Curve" id=5]
 min_value = -1024.0
 max_value = 200.0
 _data = [ Vector2( 0, -159.167 ), 0.0, 1711.89, 0, 0, Vector2( 1, -1024 ), 334.954, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=16]
-curve = SubResource( 15 )
+[sub_resource type="CurveTexture" id=6]
+curve = SubResource( 5 )
 
-[sub_resource type="Curve" id=17]
+[sub_resource type="Curve" id=7]
 _data = [ Vector2( 0, 0.627123 ), 0.0, 2.35498, 0, 0, Vector2( 0.5875, 0.508941 ), 0.227273, 0.227273, 0, 0, Vector2( 1, 0 ), -2.86429, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=18]
-curve = SubResource( 17 )
+[sub_resource type="CurveTexture" id=8]
+curve = SubResource( 7 )
 
-[sub_resource type="ParticlesMaterial" id=19]
+[sub_resource type="ParticlesMaterial" id=9]
 emission_shape = 1
 emission_sphere_radius = 1.0
 flag_disable_z = true
@@ -43,15 +44,15 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 linear_accel = 200.0
 linear_accel_random = 1.0
-linear_accel_curve = SubResource( 16 )
+linear_accel_curve = SubResource( 6 )
 scale = 10.0
 scale_random = 0.5
-scale_curve = SubResource( 18 )
-color_ramp = SubResource( 14 )
+scale_curve = SubResource( 8 )
+color_ramp = SubResource( 4 )
 hue_variation = 1.0
 hue_variation_random = 0.05
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=10]
 resource_name = "anim"
 length = 2.0
 loop = true
@@ -98,11 +99,14 @@ shape = SubResource( 1 )
 
 [node name="Particles2D" type="Particles2D" parent="."]
 show_behind_parent = true
-material = SubResource( 11 )
+material = SubResource( 2 )
 amount = 20
 local_coords = false
-process_material = SubResource( 19 )
+process_material = SubResource( 9 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/anim = SubResource( 12 )
+anims/anim = SubResource( 10 )
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 1 )
 [connection signal="body_entered" from="." to="." method="_on_ReloadPickup_body_entered"]

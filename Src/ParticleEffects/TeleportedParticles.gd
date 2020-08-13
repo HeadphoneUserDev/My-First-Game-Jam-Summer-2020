@@ -19,3 +19,9 @@ func poof_finished():
 	queue_free()
 	
 	pass
+
+func teleported():
+	
+	$Teleported.play()
+	
+	pass

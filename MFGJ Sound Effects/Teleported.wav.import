@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Teleported.wav-3f3999c87dfb51fbeb09a914f4998b4b.sample"
+
+[deps]
+
+source_file="res://MFGJ Sound Effects/Teleported.wav"
+dest_files=[ "res://.import/Teleported.wav-3f3999c87dfb51fbeb09a914f4998b4b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

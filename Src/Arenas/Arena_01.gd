@@ -34,7 +34,8 @@ var camera_changed = false
 
 func _ready():
 	
-#	Input.set_custom_mouse_cursor(load("res://MFGJ Sprites/Cursur/WarpDevice2.png"), Input.CURSOR_ARROW, Vector2(16, 16))
+	$IntenseMusicSomewhat.play()
+	$NotIntense.play()
 	
 	Global.node_creation_parent = self
 	rng.randomize()
@@ -70,6 +71,7 @@ func _process(_delta):
 	
 	if $EnemyContainer.get_child_count() == 0 and checked == true:
 		$BreakTimer.start()
+		$Music.play("notIntense_fadeIn")
 		print("break")
 		minweaponTimer += 25
 		maxweaponTimer += 25
@@ -122,6 +124,7 @@ func _on_EnemySpawnTimer_timeout():
 
 func _on_BreakTimer_timeout():
 	
+	$Music.play("intense_fadeIn")
 	$BreakTimer.stop()
 	$EnemySpawnTimer.start()
 	print("Start")
@@ -136,6 +139,7 @@ func _on_WeaponPickUpTimer_timeout():
 		weaponPickupPosition = Vector2(rand_range(50, 1230), rand_range(50, 670))
 	
 	Global.instance_node(weaponPickup, weaponPickupPosition, self)
+	
 	
 	pass
 

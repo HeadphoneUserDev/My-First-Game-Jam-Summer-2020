@@ -8,6 +8,7 @@ func _ready():
 	
 	randomize()
 	anim_play()
+	sound()
 	
 	pass
 
@@ -34,3 +35,10 @@ func anim_play():
 	$AnimationPlayer.play("anim")
 	
 	pass
+
+func sound():
+	
+	$AudioStreamPlayer2D.play()
+	
+	pass
+

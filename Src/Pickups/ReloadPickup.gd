@@ -8,6 +8,7 @@ func _ready():
 	
 	randomize()
 	anim_play()
+	$AudioStreamPlayer2D.play()
 	
 	pass
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Src/ParticleEffects/TeleportedParticles.gd" type="Script" id=1]
+[ext_resource path="res://MFGJ Sound Effects/Teleported.wav" type="AudioStream" id=2]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 blend_mode = 1
@@ -65,9 +66,12 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 1 ),
-"transitions": PoolRealArray( 1 ),
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "values": [ {
+"args": [  ],
+"method": "teleported"
+}, {
 "args": [  ],
 "method": "poof_finished"
 } ]
@@ -87,3 +91,7 @@ process_material = SubResource( 8 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/poof = SubResource( 9 )
+
+[node name="Teleported" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 2 )
+volume_db = 4.216

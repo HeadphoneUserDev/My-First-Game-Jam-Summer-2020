@@ -124,10 +124,12 @@ func _on_Hitbox_area_entered(area):
 		if area.is_in_group("EnemyDamager") and stun == false:
 			modulate = Color("ff0000")
 			if hp > 1:
+				$HitAudio.play()
 				velocity = -velocity * 3
 				stun = true
 				got_hit = true
 			elif hp <= 1:
+				$EnemyDead.play()
 				velocity = -velocity * 5
 				stun = true
 				stunTimer = false
@@ -199,5 +201,17 @@ func screen_shake():
 	emit_signal("enemy_dead")
 	var poof_instance = Global.instance_node(poof, global_position, Global.node_creation_parent)
 	poof_instance.get_node("Particles2D").emitting = true
+	
+	pass
+
+func explode1():
+	
+	$Explode1.play()
+	
+	pass
+
+func explode2():
+	
+	$Exploade2.play()
 	
 	pass

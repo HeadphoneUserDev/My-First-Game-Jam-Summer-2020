@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Explode1(edited).wav-25bb1ec68f5032ce5ccc5ed192a0106b.sample"
+
+[deps]
+
+source_file="res://MFGJ Sound Effects/Explode1(edited).wav"
+dest_files=[ "res://.import/Explode1(edited).wav-25bb1ec68f5032ce5ccc5ed192a0106b.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

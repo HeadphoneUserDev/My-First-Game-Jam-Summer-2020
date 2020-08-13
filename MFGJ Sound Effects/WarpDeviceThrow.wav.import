@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/WarpDeviceThrow.wav-5e4a5495cc8ae3970d8c0cad41142a01.sample"
+
+[deps]
+
+source_file="res://MFGJ Sound Effects/WarpDeviceThrow.wav"
+dest_files=[ "res://.import/WarpDeviceThrow.wav-5e4a5495cc8ae3970d8c0cad41142a01.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

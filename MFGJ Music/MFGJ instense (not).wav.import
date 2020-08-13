@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/MFGJ instense (not).wav-191bff9cc8d78c7fa0d7cb4ff2be954a.sample"
+
+[deps]
+
+source_file="res://MFGJ Music/MFGJ instense (not).wav"
+dest_files=[ "res://.import/MFGJ instense (not).wav-191bff9cc8d78c7fa0d7cb4ff2be954a.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

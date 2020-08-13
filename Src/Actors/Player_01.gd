@@ -44,6 +44,7 @@ var death_anim_played = false
 var is_using_weapon = false
 var picked_up = false
 var weaponDisplay_connected = false
+var healthAudio = false
 var chosen_weapon1 = true
 var chosen_weapon2 = false
 var chosen_weapon3 = false
@@ -229,6 +230,7 @@ func dead_state():
 #	start_deadTimer = true
 	yield(get_tree().create_timer(1), "timeout")
 	get_tree().reload_current_scene()
+	Global.points = 0
 	
 	
 	pass
@@ -247,6 +249,7 @@ func pistol_shoot():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon1 == true and stun == false:
 		Global.instance_node(bullet, $PistolGuide.global_position, Global.node_creation_parent)
+		$ShootAudio.play()
 		$ReloadSpeed.wait_time = pistolReload
 		$ReloadSpeed.start()
 		$AnimatedSprite.play("PistolAim")
@@ -267,6 +270,7 @@ func machineGun_shoot():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon2 == true and stun == false:
 		Global.instance_node(machineGun_bullet, $MachineGunGuide.global_position, Global.node_creation_parent)
+		$ShootAudio.play()
 		$ReloadSpeed.wait_time = machinegunReload
 		$ReloadSpeed.start()
 		$AnimatedSprite.play("MachineGunAim")
@@ -287,6 +291,7 @@ func bazooka_shoot():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon3 == true and stun == false:
 		Global.instance_node(bazookaBullet, bazookaGuide.global_position, Global.node_creation_parent)
+		$BazookaLaunch.play()
 		$ReloadSpeed.wait_time = bazookaReload
 		$ReloadSpeed.start()
 		can_shoot = false
@@ -305,6 +310,7 @@ func warp_teleport():
 	
 	if Input.is_action_pressed("click") and Global.node_creation_parent != null and can_shoot and is_dead == false and chosen_weapon4 == true and warpArea_used == false and stun == false:
 		Global.instance_node(warpArea, global_position, Global.node_creation_parent)
+		$WarpDeviceThrow.play()
 		warpArea_used = true
 		$ReloadSpeed.wait_time = 0.0005
 		$ReloadSpeed.start()
@@ -336,6 +342,10 @@ func _on_Hitbox_area_entered(area):
 	
 	if is_dead == false:
 		if area.is_in_group("Enemy"): 
+			if hp <= 1:
+				$DeadHit.play()
+			else:
+				$Hit.play()
 			signaled = false
 			knockback = area.knockback_vector * 350
 			modulate = Color("0000ff")
@@ -369,17 +379,30 @@ func _on_Hitbox_area_entered(area):
 			
 			
 		elif area.is_in_group("Health") and hp != 5:
+			
+			if hp <= 4:
+				healthAudio = false
+			else:
+				healthAudio = true
+			
 			hp += 2
 			hp = clamp(hp, 0, max_hp)
 			emit_signal("healthChange", hp * 100/max_hp)
 			print(hp)
 			
+			if healthAudio == false:
+				$HealthPickupAudio.play()
+			else:
+				$HealthPickupAudio.stop()
+			
 			if hp == 5:
 				yield(get_tree().create_timer(0.2), "timeout")
 				healthFull = true
+				healthAudio = true
 			
 		elif area.is_in_group("WeaponPickUp"):
 			
+			$WeaponPickupAudio.play()
 			signaled = false
 			
 #			var chosenWeapon
@@ -420,6 +443,7 @@ func _on_Hitbox_area_entered(area):
 			
 			
 		elif area.is_in_group("ReloadUpgrade"):
+			$ReloadAudio.play()
 			if chosen_weapon1 == true:
 				pistolReload *= 0.9
 			elif chosen_weapon2 == true:
@@ -453,5 +477,17 @@ func screen_shake():
 	emit_signal("expo_dead")
 	var poof_instance = Global.instance_node(poof, global_position, Global.node_creation_parent)
 	poof_instance.get_node("Particles2D").emitting = true
+	
+	pass
+
+func explode1():
+	
+	$Explode1.play()
+	
+	pass
+
+func explode2():
+	
+	$Explode2.play()
 	
 	pass
